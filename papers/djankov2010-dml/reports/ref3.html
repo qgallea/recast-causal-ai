@@ -77,6 +77,35 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -156,43 +185,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <section id="referee-3-report-robustness-and-replication" class="level2">
 <h2 class="anchored" data-anchor-id="referee-3-report-robustness-and-replication">Referee 3 Report: Robustness and Replication</h2>
-<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Major concerns</p>
-<section id="blocking-issues" class="level3">
-<h3 class="anchored" data-anchor-id="blocking-issues">Blocking issues</h3>
-<ul>
-<li>None</li>
-</ul>
+<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Minor revision</p>
+<section id="replication-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="replication-assessment">Replication assessment</h3>
+<p>The replication is a clear success. All four reference specifications (Investment, FDI, Business density, Entry rate regressed on the five-year effective tax rate with 12 controls) replicate within a 0.69% maximum deviation, with exact sample-size matches (<span class="math inline">\(N = 61, 61, 60, 50\)</span>). All signs are correct. The 4/4 pass rate against the Baiardi &amp; Naghi (2024) benchmarks leaves no doubt about the fidelity of the data processing and regression implementation.</p>
 </section>
-<section id="major-issues" class="level3">
-<h3 class="anchored" data-anchor-id="major-issues">Major issues</h3>
-<ol type="1">
-<li><p><strong>Replication fidelity for Panel C (Business density) is very poor: 177.9% relative deviation.</strong> The replicated coefficient is -0.195 vs.&nbsp;the published -0.070 (from Baiardi &amp; Naghi 2024). This is not a small discrepancy attributable to rounding or standard-error differences — the replicated estimate is nearly three times the published value in absolute terms. The paper attributes this entirely to sample-size differences (N=53 vs.&nbsp;N=60), but a drop of only 7 observations should not flip a coefficient from -0.070 to -0.195. The authors must investigate whether the sample composition differs (e.g., which countries are dropped) and whether the coefficient is driven by influential observations in the smaller sample. A leverage/influence diagnostic (Cook’s distance or DFBETAS) for the Panel C specification is needed.</p></li>
-<li><p><strong>Panel A (Investment ~ five-year effective rate) shows sign instability across DML learners.</strong> Two of four learners (LassoCV: +0.010, ElasticNet: +0.027) produce positive coefficients, while the other two (RandomForest: -0.118, GradientBoosting: -0.132) produce negative coefficients. The OLS estimate is -0.089. The sign instability is correctly flagged in the diagnostics (<code>dml_direction: FAIL</code>) and discussed in the paper text (Section 3.2), but the paper does not adequately explain <em>why</em> the linear learners flip sign while tree-based learners do not. The nuisance R-squared values for LassoCV on this specification are deeply negative (R2_outcome = -0.236, R2_treatment = -0.347), which means the Lasso nuisance models are worse than a constant predictor. The paper should explicitly state that the DML estimates from Lasso and ElasticNet for Panel A are unreliable and should not be interpreted, rather than simply noting the sign change.</p></li>
-<li><p><strong>Sample-size discrepancy is underexplained.</strong> The paper states the sample drops from 50-61 (reference) to 42-53 (ours) “due to missing values in replication data for some controls.” This is a potentially consequential 13-18% sample loss. The paper should report: (a) which specific control variables cause the most missingness, (b) whether the dropped observations are geographically or economically non-random, and (c) a comparison of summary statistics between the full and reduced samples. Without this information, it is impossible to assess whether the replication deviations are benign or reflect systematic sample selection.</p></li>
-</ol>
+<section id="essential-issues" class="level3">
+<h3 class="anchored" data-anchor-id="essential-issues">Essential issues</h3>
+<p>None — replication is adequate and the core DML results are well-supported.</p>
 </section>
-<section id="minor-issues" class="level3">
-<h3 class="anchored" data-anchor-id="minor-issues">Minor issues</h3>
+<section id="suggestions" class="level3">
+<h3 class="anchored" data-anchor-id="suggestions">Suggestions</h3>
 <ol type="1">
-<li><p><strong>No original-paper reference values are reported for the statutory or first-year effective rate specifications.</strong> The replication_results.json file shows <code>"match": null</code> for 8 of 12 specifications, meaning no published benchmarks are available for comparison. The paper correctly notes that reference values come only from Baiardi &amp; Naghi (2024) for the five-year effective rate, but this limitation should be more prominently flagged. Without benchmarks, the reader cannot assess replication fidelity for two-thirds of the specification matrix.</p></li>
-<li><p><strong>The forest plot does not include the published reference estimate as a separate row.</strong> The plot shows “OLS (replicated)” but not the Baiardi &amp; Naghi (2024) or original Djankov et al.&nbsp;(2010) published point estimates. Adding a “Published” row for each panel (where available) would allow the reader to visually assess the replication gap directly.</p></li>
-<li><p><strong>Panel A DML table reports LassoCV as “preferred learner” in the JSON (<code>preferred_coef: 0.009672</code>), but the paper text correctly focuses on tree-based learners for interpretation.</strong> There is a disconnect between the automated pipeline’s preferred-learner selection (which chose LassoCV based on some criterion) and the paper’s narrative. The JSON metadata should be updated to reflect that LassoCV is inappropriate for Panel A, or the paper should explicitly note the override.</p></li>
-<li><p><strong>HC1 standard errors are correctly used throughout, consistent with the <code>se_type</code> field in replication_results.json.</strong> No issues here.</p></li>
-<li><p><strong>Sample sizes in the LaTeX tables are consistent with the JSON files.</strong> Panel A-C show N=53 and Panel D shows N=42, matching <code>replication_results.json</code> and <code>dml_results.json</code>. No inconsistencies detected.</p></li>
-<li><p><strong>Missing robustness checks.</strong> Given the small N, the following would strengthen the analysis:</p>
-<ul>
-<li>Leave-one-out or jackknife estimates for the primary specification, to assess sensitivity to individual countries.</li>
-<li>A reduced-control specification (e.g., dropping the 3-4 controls with the most missing values) to recover a larger sample and check whether results are robust to the sample-size/control tradeoff.</li>
-<li>A brief note on whether results change materially if the treatment variable is winsorized, given that tax-rate outliers may be influential in a sample of ~50 countries.</li>
-</ul></li>
+<li><p><strong>Lasso p-value rounding in FDI panel (Panel B).</strong> The paper reports the FDI Lasso estimate as “<span class="math inline">\(-0.148\)</span>, <span class="math inline">\(p = 0.05\)</span>”. The JSON records <span class="math inline">\(p = 0.053\)</span>, which strictly rounds to <span class="math inline">\(0.05\)</span> only at one decimal place. Since the narrative frames Lasso as “significant at 5%,” the authors should either report the p-value to two decimal places (<span class="math inline">\(p = 0.05\)</span>, which is defensible) or explicitly note “marginally significant” to avoid any impression of cherry-picked rounding. This is cosmetic but worth fixing in one pass.</p></li>
+<li><p><strong>Nuisance <span class="math inline">\(R^2\)</span> discussion could be tightened.</strong> The diagnostics table correctly reports the FAIL flag (average <span class="math inline">\(R^2_Y = -0.43\)</span>, <span class="math inline">\(R^2_D = -0.18\)</span>) and the discussion paragraph provides a clear explanation: small-sample ML overfitting drives negative averages, while the best learner (Forest) achieves positive <span class="math inline">\(R^2\)</span>. This is transparent and adequate. A small improvement would be to note explicitly that the B&amp;N adjusted SE formula already penalises unstable nuisance estimates, so the FAIL flag does not mechanically invalidate the confidence intervals. One sentence would suffice.</p></li>
+<li><p><strong>Neural network sign disagreement across panels.</strong> The paper correctly highlights that NeuralNet diverges in the primary specification (Investment panel: <span class="math inline">\(+0.063\)</span>, <span class="math inline">\(p = 0.61\)</span>) and attributes this to small-sample instability. It is worth noting for completeness that the NeuralNet <em>agrees</em> on a negative sign in the other three panels (FDI: <span class="math inline">\(-0.113\)</span>; Business density: <span class="math inline">\(-0.048\)</span>; Entry rate: <span class="math inline">\(-0.191\)</span>, <span class="math inline">\(p &lt; 0.01\)</span>). This strengthens the argument that the Investment-panel disagreement is noise rather than a systematic concern. A brief parenthetical would suffice.</p></li>
+<li><p><strong>Forest plot inspection.</strong> The forest plot displays all four panels (A–D) with OLS, six individual learners, Ensemble, and Best for the five-year effective rate. Visual inspection confirms: (a) all DML point estimates in Panels A, B, and D are left of OLS, consistent with the narrative that DML recovers larger effects; (b) confidence intervals for tree-based methods exclude zero in Panel A, matching the reported significance; (c) the NeuralNet estimate in Panel A is the only point clearly to the right of zero; (d) Panel D shows the tightest clustering of learners, consistent with the claim that all six are significant. The plot is accurate and well-constructed. One minor visual note: the Ensemble and Best markers use a different colour (green) which aids readability, but no legend explains the colour coding — adding a legend entry would improve standalone interpretability.</p></li>
 </ol>
 </section>
 <section id="comments-to-the-authors" class="level3">
 <h3 class="anchored" data-anchor-id="comments-to-the-authors">Comments to the authors</h3>
-<p>The replication exercise is comprehensive in scope, covering all 12 specifications from the original Table 5D. The finding that all 12 OLS coefficients have the correct negative sign is reassuring and suggests the data and code pipeline are fundamentally sound. The close replication of Panel D (Entry rate ~ five-year effective rate: -0.128 vs.&nbsp;-0.133, 3.5% deviation) is a strong anchor point. However, the Panel C deviation of 177.9% is troubling and cannot be dismissed as a simple sample-size artifact without further investigation. A coefficient of -0.195 that is nearly three times the published value of -0.070 raises the question of whether specific influential observations in the reduced sample are driving the result.</p>
-<p>The DML extension delivers clear value for Panels B, C, and D, where multiple learners produce significant negative coefficients while OLS is insignificant. This is exactly the pattern expected when DML handles high-dimensional controls more efficiently than kitchen-sink OLS. The strongest results are in Panel D (Entry rate), where GradientBoosting yields -0.228 (p=0.002) compared to OLS -0.128 (p=0.34) — a meaningful gain in both magnitude and precision. For Panel B (FDI), ElasticNet yields -0.148 (p=0.050), crossing the significance threshold that OLS does not reach. These results are robust across learners: in Panel B, all four DML learners agree on sign and approximate magnitude (-0.120 to -0.163); in Panel D, three of four are significant.</p>
-<p>Panel A (Investment/GDP) is the weak point. The sign instability across DML learners, combined with deeply negative nuisance R-squared values (average R2_outcome = -0.096, with LassoCV at -0.236), means the DML estimates for this panel are not informative. The paper discusses this honestly but should go further: the Lasso and ElasticNet estimates for Panel A should be explicitly flagged as unreliable rather than included in the results table without qualification. It would also be useful to note that the Baiardi &amp; Naghi (2024) reference DML estimate for Panel A (-0.178, SE 0.096) is itself only marginally significant, suggesting that the investment outcome has inherently low signal in this cross-country setting.</p>
-<p>The GATE analysis finding of no significant heterogeneity is not surprising given the sample size and is appropriately caveated with a low-power disclaimer. The wide GATE confidence intervals (e.g., Q1: [-0.821, 0.498]) confirm that the data simply cannot support heterogeneity analysis with N approximately equal to 50.</p>
+<p>The replication component of this paper is exemplary. A 0.69% worst-case deviation across four specifications, with exact sample-size matches and correct signs throughout, sets a high standard for automated replication. The choice to benchmark against Baiardi &amp; Naghi (2024) Table 1 provides a credible external reference, and the match between the pipeline’s Forest estimate (<span class="math inline">\(-0.211\)</span>) and the published Forest benchmark (<span class="math inline">\(-0.204\)</span>) — an 18.5% relative difference with CI overlap — further validates the DML implementation.</p>
+<p>The robustness picture is strong. Across the 12 outcome-treatment combinations, the DML estimates consistently recover larger negative coefficients than OLS, with several achieving significance where OLS does not. The cross-fit stability ratio of 0.21 (Forest, primary spec) indicates that the variation across repetitions is modest relative to sampling uncertainty, which is reassuring. The learner sign agreement (5/6 negative in the primary spec, 6/6 negative in the entry rate panel) provides a natural robustness check that the results do not depend on a single ML method. The sole diagnostic concern — negative average nuisance <span class="math inline">\(R^2\)</span> — is a known consequence of applying cross-validated ML to <span class="math inline">\(N \approx 60\)</span> with 12 controls, and the paper handles this transparently. The suggestions above are cosmetic improvements that would strengthen an already well-executed analysis; none rises to the level of an essential revision.</p>
 
 
 </section>

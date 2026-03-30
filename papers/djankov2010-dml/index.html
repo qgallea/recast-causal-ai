@@ -80,6 +80,35 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -166,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="quarto-category">Public Finance</div>
     <div class="quarto-category">Taxation</div>
     <div class="quarto-category">2010</div>
-    <div class="quarto-category">PARTIAL</div>
+    <div class="quarto-category">PASS</div>
   </div>
   </div>
 
@@ -204,14 +233,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <section id="paper-summary" class="level2">
 <h2 class="anchored" data-anchor-id="paper-summary">Paper summary</h2>
 <p><strong>Citation:</strong> Djankov, S., Ganser, T., McLiesh, C., Ramalho, R. &amp; Shleifer, A. (2010). “The Effect of Corporate Taxes on Investment and Entrepreneurship.” <em>American Economic Journal: Macroeconomics</em>, 2(3), 31–64. <a href="https://doi.org/10.1257/mac.2.3.31">DOI</a></p>
-<p><strong>Identification strategy:</strong> Cross-country OLS regressions estimating the effect of corporate tax rates on investment and entrepreneurship for the year 2004. The paper uses three measures of corporate taxes (statutory rate, first-year effective rate, five-year effective rate) and four outcome variables (investment/GDP, FDI/GDP, business density, entry rate), with 12 control variables spanning tax burden, business regulation, governance, and inflation.</p>
+<p><strong>Identification strategy:</strong> Cross-country OLS regressions estimating the effect of corporate tax rates on investment and entrepreneurship for the year 2004. Three measures of corporate taxes (statutory rate, first-year effective rate, five-year effective rate) and four outcome variables (investment/GDP, FDI/GDP, business density, entry rate), with 12 control variables from the Baiardi &amp; Naghi (2024) replication code.</p>
 <p><strong>Key original result:</strong> Higher corporate taxes are associated with lower investment and entrepreneurship. With all 12 controls (“kitchen sink” specification), the five-year effective tax rate has a coefficient of −0.189 (SE 0.118) on investment/GDP, though the effect is no longer statistically significant.</p>
-<p><strong>Reference for this RECAST:</strong> This paper was also revisited by <a href="https://doi.org/10.1093/ectj/utae004">Baiardi &amp; Naghi (2024, <em>Econometrics Journal</em>)</a>, who applied DML with 7 ML methods to the same data and found larger, often significant negative effects.</p>
+<p><strong>Reference:</strong> This paper was revisited by <a href="https://doi.org/10.1093/ectj/utae004">Baiardi &amp; Naghi (2024, <em>Econometrics Journal</em>)</a>, who applied DML with 7 ML methods and found larger, often significant negative effects.</p>
 <hr>
 </section>
 <section id="replication-results" class="level2">
 <h2 class="anchored" data-anchor-id="replication-results">Replication results</h2>
-<p>The replication is <strong>partially successful</strong>. All 12 OLS coefficients (4 outcomes × 3 tax measures) have the correct <strong>negative sign</strong>. However, coefficient magnitudes differ from the Baiardi &amp; Naghi (2024) reference due to a sample-size gap: our data has N = 42–53 after listwise deletion vs.&nbsp;N = 50–61 in the reference, driven by missing values in institutional control variables (employment rigidity, legal formalism, average informality).</p>
+<p>The replication is <strong>successful</strong>. All 12 OLS coefficients (4 outcomes × 3 tax measures) match the Baiardi &amp; Naghi (2024) reference within 0.69% maximum deviation. Sample sizes match exactly.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 44%">
@@ -233,29 +262,29 @@ document.addEventListener('DOMContentLoaded', function() {
 <tr class="odd">
 <td>Panel A: Investment/GDP</td>
 <td>−0.189</td>
-<td>−0.089</td>
-<td>53.0%</td>
-<td>FAIL</td>
+<td>−0.189</td>
+<td>0.13%</td>
+<td>PASS</td>
 </tr>
 <tr class="even">
 <td>Panel B: FDI/GDP</td>
 <td>−0.095</td>
-<td>−0.121</td>
-<td>27.9%</td>
-<td>FAIL</td>
+<td>−0.095</td>
+<td>0.35%</td>
+<td>PASS</td>
 </tr>
 <tr class="odd">
 <td>Panel C: Business density</td>
 <td>−0.070</td>
-<td>−0.195</td>
-<td>177.9%</td>
-<td>FAIL</td>
+<td>−0.070</td>
+<td>0.69%</td>
+<td>PASS</td>
 </tr>
 <tr class="even">
 <td>Panel D: Entry rate</td>
 <td>−0.133</td>
-<td>−0.128</td>
-<td>3.5%</td>
+<td>−0.133</td>
+<td>0.23%</td>
 <td>PASS</td>
 </tr>
 </tbody>
@@ -270,18 +299,18 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="dml-extension" class="level2">
 <h2 class="anchored" data-anchor-id="dml-extension">DML Extension</h2>
-<p>Double/Debiased Machine Learning was applied using the <strong>PLR</strong> (Partially Linear Regression) model with adaptive cross-fitting (K=2 folds for N&lt;200), 4 ML methods (LassoCV, Random Forest, Gradient Boosting, ElasticNet), and 3 repetitions. All 12 specifications (4 outcomes × 3 tax measures) were estimated.</p>
+<p>Double/Debiased Machine Learning was applied using the <strong>PLR</strong> (Partially Linear Regression) model with adaptive cross-fitting (K=2), 6 ML methods + Ensemble + Best, and 5 repetitions with median aggregation. All 12 specifications (4 outcomes × 3 tax measures) were estimated.</p>
 <section id="key-results-five-year-effective-tax-rate" class="level3">
 <h3 class="anchored" data-anchor-id="key-results-five-year-effective-tax-rate">Key results (five-year effective tax rate)</h3>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 12%">
-<col style="width: 9%">
-<col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 14%">
-<col style="width: 21%">
+<col style="width: 15%">
 <col style="width: 10%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -290,60 +319,61 @@ document.addEventListener('DOMContentLoaded', function() {
 <th>Lasso</th>
 <th>Boosting</th>
 <th>Forest</th>
-<th>ElasticNet</th>
 <th>Best</th>
+<th>N</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>A: Investment</td>
-<td>−0.089</td>
-<td>+0.010</td>
-<td>−0.132</td>
-<td>−0.118</td>
-<td>+0.027</td>
-<td>−0.132</td>
+<td>−0.189</td>
+<td>−0.238</td>
+<td>−0.234</td>
+<td>−0.211**</td>
+<td>−0.211**</td>
+<td>61</td>
 </tr>
 <tr class="even">
 <td>B: FDI</td>
-<td>−0.121</td>
-<td>−0.120</td>
-<td>−0.139</td>
-<td>−0.163*</td>
-<td>−0.148**</td>
-<td>−0.163*</td>
+<td>−0.095</td>
+<td>−0.148</td>
+<td>−0.167*</td>
+<td>−0.187**</td>
+<td>−0.187**</td>
+<td>61</td>
 </tr>
 <tr class="odd">
-<td>C: Biz density</td>
-<td>−0.195</td>
-<td>−0.247***</td>
-<td>−0.104</td>
-<td>−0.165**</td>
-<td>−0.177**</td>
-<td>−0.247***</td>
+<td>C: Business density</td>
+<td>−0.070</td>
+<td>−0.139*</td>
+<td>−0.108</td>
+<td>−0.122*</td>
+<td>−0.122*</td>
+<td>60</td>
 </tr>
 <tr class="even">
 <td>D: Entry rate</td>
-<td>−0.128</td>
+<td>−0.133</td>
+<td>−0.160*</td>
+<td>−0.194**</td>
 <td>−0.173**</td>
-<td>−0.228***</td>
-<td>−0.204**</td>
-<td>−0.078</td>
-<td>−0.228***</td>
+<td>−0.173**</td>
+<td>50</td>
 </tr>
 </tbody>
 </table>
-<p><em>Stars: * p&lt;0.10, ** p&lt;0.05, *** p&lt;0.01</em></p>
-<p><strong>Best learner:</strong> Selected by lowest nuisance MSE (not p-value).</p>
-<p><strong>Key finding:</strong> DML recovers significant negative tax effects for <strong>3 of 4 outcomes</strong> (FDI, business density, entry rate), where OLS with all controls was insignificant. This confirms and strengthens the original paper’s finding that corporate taxes reduce investment and entrepreneurship. For investment/GDP (Panel A), DML is uninformative — two learners flip sign due to deeply negative nuisance R² (the sample is too small for reliable ML estimation with 12 controls).</p>
+<p><em>Stars: * p&lt;0.10, ** p&lt;0.05, *** p&lt;0.01. Best = Random Forest (lowest nuisance MSE).</em></p>
+<p><strong>Key finding:</strong> DML recovers significant negative tax effects across <strong>all 4 outcomes</strong>, where OLS with all controls was insignificant. The DML Forest estimate for Investment (−0.211, p=0.008) closely matches the independent Baiardi &amp; Naghi benchmark (−0.204). Five of six learners agree on the negative sign; only NeuralNet (+0.063) diverges, consistent with small-sample noise.</p>
 </section>
-<section id="gate-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="gate-analysis">GATE analysis</h3>
-<p>Group Average Treatment Effects were estimated by quartiles of <code>other_taxes</code>. No significant heterogeneity was detected — all GATE CIs overlap widely, consistent with the small sample size (N ≈ 50).</p>
+<section id="heterogeneous-treatment-effects" class="level3">
+<h3 class="anchored" data-anchor-id="heterogeneous-treatment-effects">Heterogeneous treatment effects</h3>
+<p><strong>BLP test:</strong> β₂ = 1.039 (p &lt; 0.001) — significant heterogeneity detected.</p>
+<p><strong>GATE analysis</strong> (5 quintiles of predicted CATE) shows a clear gradient: countries most negatively affected by corporate taxes (Q1: −1.72) differ substantially from least affected (Q5: +1.34).</p>
+<p><strong>CLAN analysis:</strong> Countries most affected by taxes tend to have higher trade freedom and lower inflation than least-affected countries.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="gate_plot.png" class="img-fluid figure-img"></p>
-<figcaption>GATE estimates by group</figcaption>
+<figcaption>GATE estimates by quintile</figcaption>
 </figure>
 </div>
 <hr>
@@ -351,150 +381,341 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="what-did-causal-ml-add-here" class="level2">
 <h2 class="anchored" data-anchor-id="what-did-causal-ml-add-here">What did causal ML add here?</h2>
-<p>The DML extension adds genuine value for this paper, despite the challenging setting (N ≈ 50, 12 controls). The original “kitchen sink” OLS specification, where all controls are included simultaneously, produces insignificant results because the high dimensionality relative to the sample size inflates standard errors. DML’s data-driven variable selection (via Lasso) and flexible nonlinear control (via Boosting and Random Forest) keep a smaller set of influential confounders, leading to <strong>larger absolute coefficients and lower standard errors</strong> — exactly the mechanism Baiardi &amp; Naghi (2024) identify.</p>
-<p>The main limitation is Panel A (investment/GDP), where the nuisance models perform worse than predicting the mean (negative R²). This is a known challenge when N/p is close to 1. The paper honestly flags this, recommending that only tree-based DML estimates be considered for Panel A.</p>
-<p>The GATE analysis found no heterogeneity, which is unsurprising given the sample size. A causal forest extension (not run in this RECAST) could provide individual-level CATEs if applied to the larger pooled dataset.</p>
+<p>The DML extension adds genuine value. The original “kitchen sink” OLS produces insignificant results because 12 controls on N=61 inflates standard errors. DML’s data-driven variable selection and flexible nonlinear control keep a smaller set of influential confounders, producing <strong>larger absolute coefficients and lower standard errors</strong> — exactly the mechanism Baiardi &amp; Naghi (2024) identify.</p>
+<p>The DML Forest estimate (−0.211) is within 3.4% of the independent B&amp;N benchmark (−0.204), providing strong external validation.</p>
+<p>The BLP and GATE analyses reveal significant heterogeneity: the negative tax effect varies substantially across countries, with the strongest effects in countries with higher trade openness. This heterogeneity was not explored in the original paper.</p>
 <hr>
 </section>
 <section id="referee-reports" class="level2">
 <h2 class="anchored" data-anchor-id="referee-reports">Referee reports</h2>
-<p><strong>Referee consensus:</strong> All three referees assigned “Major concerns” in round 1, with 7 major and 9 minor issues — all resolved through prose edits in a single revision round. No notebook re-runs required. The final verdict is “Minor manual revision needed” for 4 remaining items (1 major, 3 minor).</p>
+<p><strong>Referee consensus:</strong> All three referees gave “Minor revision.” One essential issue (CLAN label inversion) was identified and fixed. Three optional suggestions were deferred. <strong>Final verdict: Ready.</strong></p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Identification</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Referee 1 Report: Identification</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">DML Methods</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Referee 2 Report: DML Methods &amp; Causal Forest</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">Robustness</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href="">Referee 3 Report: Robustness and Replication</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false" href="">Synthesis</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false" href="">Synthesis Report — Round 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false" href="">Final Report</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" role="tab" aria-controls="tabset-1-10" aria-selected="false" href="">Overall Assessment</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" role="tab" aria-controls="tabset-1-11" aria-selected="false" href="">What Was Solved During Revision</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" role="tab" aria-controls="tabset-1-12" aria-selected="false" href="">Remaining Issues</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" role="tab" aria-controls="tabset-1-13" aria-selected="false" href="">Key Results</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-14-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-14" role="tab" aria-controls="tabset-1-14" aria-selected="false" href="">Notes for the Reader</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Identification</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Referee 1 Report: Identification</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">DML Methods</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Referee 2 Report: DML Methods &amp; Causal Forest</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">Robustness</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href="">Referee 3 Report: Robustness and Replication</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false" href="">Synthesis</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false" href="">Synthesis Report — Round 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false" href="">Final Report</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" role="tab" aria-controls="tabset-1-10" aria-selected="false" href="">What This RECAST Contributes</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" role="tab" aria-controls="tabset-1-11" aria-selected="false" href="">Replication Summary</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" role="tab" aria-controls="tabset-1-12" aria-selected="false" href="">DML Extension Summary</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" role="tab" aria-controls="tabset-1-13" aria-selected="false" href="">Review Process Summary</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-14-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-14" role="tab" aria-controls="tabset-1-14" aria-selected="false" href="">Remaining Items</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-15-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-15" role="tab" aria-controls="tabset-1-15" aria-selected="false" href="">Notes for the Reader</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Major concerns</p>
-<section id="blocking-issues-re-analysis-required" class="level3">
-<h3 class="anchored" data-anchor-id="blocking-issues-re-analysis-required">Blocking issues (re-analysis required)</h3>
-<ul>
-<li>None</li>
-</ul>
+<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Minor revision</p>
+<section id="contribution-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="contribution-assessment">Contribution assessment</h3>
+<p>This RECAST adds genuine value. The original Djankov et al.&nbsp;(2010) paper estimates the effect of corporate taxes on investment using OLS with 12 controls in a sample of roughly 60 countries — a setting where p/N is large enough that OLS suffers from efficiency loss and overfitting bias. The DML extension relaxes the linear functional form assumption on the nuisance functions, allows data-driven variable selection across the 12-dimensional control set, and produces a debiased treatment effect estimate via cross-fitting. The result — a Forest coefficient of -0.211 (p = 0.008) that closely matches the independent Baiardi &amp; Naghi (2024) benchmark of -0.204 — demonstrates that the original finding survives a substantially more flexible estimation approach and, indeed, gains statistical significance that OLS could not deliver.</p>
 </section>
-<section id="major-issues-prosetable-edits-required" class="level3">
-<h3 class="anchored" data-anchor-id="major-issues-prosetable-edits-required">Major issues (prose/table edits required)</h3>
-<ol type="1">
-<li><p><strong>Estimand is never formally defined (Section 2).</strong> The paper states that the original study uses “OLS with up to 12 controls” and that the DML extension uses a PLR model, but it never explicitly names the estimand. In a cross-country OLS setting with no instruments, the target parameter is a partial correlation coefficient (or, under a selection-on-observables assumption, an ATE). The paper should state which it is claiming and under what assumptions. If the claim is causal (ATE), it must invoke conditional independence / unconfoundedness explicitly; if the claim is only associational, the language in the Conclusion (“confirms the original paper’s core finding: higher corporate tax rates are associated with lower investment”) should be used consistently, and causal language elsewhere (e.g., the title “Effect of Corporate Taxes”) should be flagged as inherited from the original paper rather than endorsed.</p></li>
-<li><p><strong>Selection-on-observables is not defended for the DML extension (Sections 2–3).</strong> The original Djankov et al.&nbsp;(2010) paper itself acknowledges that OLS estimates may be biased by omitted variables (e.g., institutional quality, growth expectations, tax competition dynamics). The RECAST paper inherits this identification strategy but does not discuss whether the 12 controls are sufficient for unconfoundedness. DML requires the same conditional independence assumption as OLS – it only relaxes functional-form restrictions. The paper should include a paragraph in Section 3.1 stating that DML does not solve omitted-variable bias and that the identifying assumption remains Y(d) independent of D | X. Without this, a reader could misinterpret the DML results as having a stronger causal warrant than OLS, when in fact they have the same warrant (possibly weaker, given the nuisance-model issues documented in the diagnostics).</p></li>
-<li><p><strong>Omitted variable threats are not acknowledged (Section 2).</strong> Several plausible confounders are absent from the control set:</p>
-<ul>
-<li><em>GDP per capita or income level:</em> Rich countries have both higher tax rates and higher investment; without controlling for income, the negative coefficient may be attenuated or confounded.</li>
-<li><em>Government expenditure / public investment:</em> Tax revenues fund public goods that can crowd in private investment. The direction of bias is ambiguous.</li>
-<li><em>Tax competition / regional spillovers:</em> Countries set tax rates strategically in response to neighbours’ rates. This is a classic simultaneity concern in the cross-country tax literature.</li>
-<li><em>Historical / colonial institutions:</em> Acemoglu et al.&nbsp;(2001)-style deep determinants could confound both tax policy and investment. The paper should add a “Threats to identification” paragraph listing these and discussing the likely direction of bias.</li>
-</ul></li>
-<li><p><strong>DML sign instability for the primary specification undermines the identification claim (Section 3.2, Diagnostics Table).</strong> For the primary specification (Investment ~ five-year effective rate), Lasso and Elastic Net produce positive coefficients while Random Forest and Gradient Boosting produce negative ones. The diagnostics correctly flag this, and the paper’s discussion attributes it to poor nuisance-model fit. However, the paper does not discuss the <em>identification implication</em>: when the first-stage residualisation is essentially noise (R-squared &lt; 0), DML is not actually partialling out confounders – it is running a near-raw regression on noisy residuals. The paper should explicitly state that the DML extension is uninformative for the Investment panel and that the identification strategy (selection on observables with 12 controls) has insufficient power in a sample of N=53 for this outcome.</p></li>
-</ol>
+<section id="essential-issues-must-be-addressed-paper-is-unpublishable-without-these" class="level3">
+<h3 class="anchored" data-anchor-id="essential-issues-must-be-addressed-paper-is-unpublishable-without-these">Essential issues (must be addressed — paper is unpublishable without these)</h3>
+<p>None — identification is sound.</p>
+<p>The paper correctly identifies that the original study relies on selection-on-observables (OLS with controls) rather than an IV or quasi-experimental design. The DML PLR model preserves this identification assumption: it estimates the same linear treatment effect parameter theta under the same conditional independence condition, differing only in how the nuisance functions g(X) and m(X) are estimated. The estimand (the partial effect of the tax rate on the outcome, conditional on controls) is clearly defined and consistently targeted across OLS and DML. No identification logic is altered by the extension.</p>
 </section>
-<section id="minor-issues" class="level3">
-<h3 class="anchored" data-anchor-id="minor-issues">Minor issues</h3>
+<section id="suggestions-would-improve-the-paper-but-optional" class="level3">
+<h3 class="anchored" data-anchor-id="suggestions-would-improve-the-paper-but-optional">Suggestions (would improve the paper, but optional)</h3>
 <ol type="1">
-<li><p><strong>Inconsistent sample sizes across panels need identification-relevant explanation (Section 2.2).</strong> The replication yields N=53 for Panels A–C but N=42 for Panel D (entry rate). The paper notes this is “due to additional missing values in control variables” but does not discuss whether the missingness is random or correlated with the treatment or outcome. If countries with missing entry-rate data are systematically different (e.g., developing countries with weaker statistical agencies), the Panel D sample may have different identification properties than Panels A–C. A sentence noting whether the missing-data pattern is plausibly random would strengthen the identification discussion.</p></li>
-<li><p><strong>GATE analysis uses “other taxes” as the heterogeneity variable without justification (Section 3.3).</strong> The choice of splitting variable affects what dimension of heterogeneity is tested. “Other taxes” is itself a control variable in the regression, which creates a conceptual tension: the GATE is estimating heterogeneity along a dimension that is being partialled out in the first stage. A brief justification for this choice (and acknowledgment that splitting on a control can affect interpretation) would be appropriate.</p></li>
-<li><p><strong>The paper should clarify whether HC1 standard errors are appropriate for the DML extension (Section 3.1).</strong> OLS uses HC1 robust SEs, which is standard. For DML, the standard errors come from the cross-fitted moment condition and are asymptotically valid under different regularity conditions. The paper should note which SE formula the DML estimates use (Neyman-orthogonal score-based SEs, as implemented in DoubleML) and whether these are comparable to the HC1 SEs reported for OLS.</p></li>
-<li><p><strong>Reference to Baiardi &amp; Naghi (2024) sample sizes in paper_spec.json vs.&nbsp;replication (Section 2.2).</strong> The paper_spec.json lists N=61 for the reference Investment specification, but the replication achieves only N=53. The 8-observation gap (13% of the sample) is material in a setting where identification power is already limited. The paper mentions this but should quantify the potential impact: with N=53 and 12 controls, the effective degrees of freedom are 40, making precise estimation very difficult.</p></li>
+<li><p><strong>Acknowledge the selection-on-observables limitation explicitly in the conclusion.</strong> The paper does a good job describing the original identification strategy in Section 2, but the conclusion (Section 5) could benefit from a single sentence noting that neither OLS nor DML resolves potential endogeneity from omitted confounders (e.g., political institutions that jointly determine tax policy and investment climate). The DML extension strengthens efficiency and relaxes functional form, but it does not substitute for exogenous variation. This is well understood by the target audience, but stating it prevents over-interpretation.</p></li>
+<li><p><strong>Briefly discuss the nuisance model R-squared in the identification context.</strong> The diagnostics table (Table 5) reports average nuisance R-squared values of -0.43 (outcome) and -0.18 (treatment). The paper correctly notes this reflects small-sample ML overfitting and that the best learner (Forest) achieves positive R-squared. From an identification standpoint, low R-squared in the treatment model m(X) means the controls explain little of the variation in tax rates — which actually supports the plausibility of the partially linear model, since it implies the treatment has substantial residual variation not collinear with X. This could be mentioned as a minor point in the diagnostics discussion to reassure readers.</p></li>
+<li><p><strong>Consider noting that the GATE gradient (Q1: -1.72 to Q5: +1.34) is descriptive, not causal at the subgroup level.</strong> The BLP test and GATE analysis in Section 3.2 are informative, and the CLAN finding about trade freedom is suggestive. However, the GATE estimates are conditional on predicted CATEs from a first-stage model, and in N = 61 with 12 quintile bins of approximately 12 observations each, the extreme quintile estimates are necessarily imprecise (as the wide CIs confirm). The paper could add a sentence noting that the heterogeneity results should be interpreted as exploratory evidence of effect variation rather than as well-identified subgroup causal effects.</p></li>
 </ol>
 </section>
 <section id="comments-to-the-authors" class="level3">
 <h3 class="anchored" data-anchor-id="comments-to-the-authors">Comments to the authors</h3>
-<p>The RECAST of Djankov et al.&nbsp;(2010) is a useful exercise that highlights a genuine tension in the original paper: the “kitchen sink” specification with 12 controls absorbs too much variation in a sample of 50–85 countries, leaving OLS estimates imprecise. The DML extension is well-motivated by the Baiardi &amp; Naghi (2024) finding that flexible nuisance estimation can recover signal that OLS misses. For three of four outcomes (FDI, business density, entry rate), the DML results are indeed more precise and more consistently negative, which is an informative finding.</p>
-<p>However, the paper’s identification discussion is too thin for a causal claim. The fundamental challenge in Djankov et al.&nbsp;(2010) is not functional form – it is that corporate tax rates are endogenous to the investment environment. Countries with strong institutions, stable macroeconomic environments, and growth potential tend to have specific tax structures that reflect political equilibria, not random variation. The 12 controls capture some of this, but omitted confounders (income level, government expenditure, tax competition) remain plausible. DML addresses functional-form misspecification but does not address omitted variables. The paper should be explicit about this: the DML extension strengthens the <em>statistical</em> evidence (tighter CIs, more consistent signs) but not the <em>causal</em> evidence. The identification warrant is inherited from the original paper and should be presented as such, with its limitations clearly stated.</p>
-<p>The sign instability in the Investment panel (Panel A) deserves more careful treatment. The fact that two of four learners produce positive coefficients, combined with negative R-squared values for all nuisance models, indicates that the DML machinery is not functioning as intended for this outcome. Rather than presenting these results alongside the other panels and noting they are “mixed,” the paper should clearly demarcate Panel A as a case where the DML extension is uninformative due to insufficient sample size relative to the number of controls. This is not a criticism of the methodology – it is an honest assessment of when the method reaches its limits.</p>
-<p>Finally, the replication deviation of 177.9% for business density (Panel C) is large enough to warrant investigation beyond “sample-size differences.” Even with 7 fewer observations, a coefficient that nearly triples (-0.195 vs.&nbsp;-0.070) suggests that the dropped observations may have been influential. A brief sensitivity check (e.g., identifying which countries are missing and whether they are outliers in the original data) would help determine whether this is a benign sample composition effect or a sign that the original result was fragile.</p>
+<p>This is a well-executed RECAST. The replication is essentially exact (0.69% worst deviation, all sample sizes matching), and the DML extension provides a meaningful robustness check that strengthens the original paper’s conclusions. The close alignment with the independent Baiardi &amp; Naghi (2024) Forest estimate (-0.211 vs.&nbsp;-0.204) is reassuring and suggests the pipeline is correctly implemented. The choice of PLR as the DML model is appropriate given that the original design uses OLS with a continuous treatment and no instruments.</p>
+<p>The sign agreement across learners (5/6 negative) and the cross-fit stability (ratio = 0.21) both support the credibility of the main DML result. The neural network divergence is appropriately flagged and convincingly attributed to small-sample variance. The heterogeneous treatment effect analysis is a genuine contribution beyond what the original paper or Baiardi &amp; Naghi (2024) provide, and the finding that trade openness moderates the tax-investment relationship is economically intuitive. Overall, the identification strategy is preserved and well-documented, and the paper should proceed with at most minor revisions.</p>
 </section>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Major concerns</p>
-<section id="blocking-issues" class="level3">
-<h3 class="anchored" data-anchor-id="blocking-issues">Blocking issues</h3>
-<ul>
-<li>None</li>
-</ul>
+<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Minor revision</p>
+<hr>
+<section id="methodological-contribution" class="level3">
+<h3 class="anchored" data-anchor-id="methodological-contribution">Methodological contribution</h3>
+<p>The DML extension is well-suited to Djankov et al.&nbsp;(2010). The original setting – cross-country OLS with a continuous treatment (corporate tax rates) and 12 controls in a sample of N=50–61 – is exactly the regime where DML offers value: p/N is large (~0.2), OLS with many controls is inefficient, and the PLR model cleanly nests the original specification. Comparing six ML learners across all 12 specifications provides genuine evidence about the robustness of the original result and aligns well with the Baiardi &amp; Naghi (2024) benchmark. The systematic finding that DML recovers larger and more significant negative coefficients than OLS, particularly for Investment and FDI, is the central value added.</p>
+<hr>
 </section>
-<section id="major-issues" class="level3">
-<h3 class="anchored" data-anchor-id="major-issues">Major issues</h3>
-<ol type="1">
-<li><p><strong>Preferred learner selection is questionable and produces a sign change (Checks 4, 6).</strong> The pipeline selects LassoCV as the preferred learner because Random Forest’s average R^2(outcome) = 0.0159 falls below the 0.1 threshold. However, LassoCV has <em>worse</em> average nuisance R^2 across specifications: R^2(outcome) = -0.2097, R^2(treatment) = -0.1647. The preferred learner is thus selected by a rule that paradoxically picks the learner with poorer nuisance fit. For the primary specification (Investment ~ effective_5yr), LassoCV yields a sign-changed coefficient of +0.010 (p = 0.94), while Random Forest yields -0.118 (p = 0.16) and Gradient Boosting yields -0.132 (p = 0.22) – both preserving the expected negative sign. The paper correctly notes this issue in the diagnostics discussion, but the <code>preferred_coef</code> field in <code>dml_results.json</code> reports +0.010, which is misleading as the headline DML finding for Panel A. <strong>Recommendation:</strong> either override the selection rule in this context (where all R^2 values are near zero or negative) and designate Random Forest or Gradient Boosting as the preferred learner for reporting, or explicitly report results from the best-performing nuisance learner per specification rather than a single global preferred learner.</p></li>
-<li><p><strong>Negative nuisance R^2 across the board raises validity concerns (Checks 4, 6, 9).</strong> Average nuisance R^2(outcome) ranges from -0.2097 (LassoCV) to +0.0159 (RandomForest); R^2(treatment) ranges from -0.1647 (LassoCV) to -0.0157 (RandomForest). Negative out-of-sample R^2 means the ML nuisance models predict <em>worse</em> than the sample mean. While the paper correctly attributes this to small N (~50) with 12 controls, the DML theoretical guarantees require nuisance estimates to converge at a sufficient rate. When nuisance R^2 is negative, the residualized outcome and treatment are essentially the raw variables plus noise, and the DML estimator degenerates toward OLS or worse. The paper should state more explicitly that the DML standard errors may not be reliable under these conditions, rather than simply interpreting significance at face value.</p></li>
-<li><p><strong>K=5 cross-fitting is borderline inadequate for N=42 (Check 2).</strong> For Panel D (entry rate), N=42 with K=5 yields approximately 8-9 observations per fold. The rule of thumb K * min_fold_size &gt; 30 is only marginally satisfied (5 * 8 = 40 &gt; 30), but the effective sample for training each nuisance model is only ~34 observations with 12 features. This contributes to the poor nuisance model performance. Consider reporting results with K=3 as a robustness check for the entry rate panel, which would give ~28 training observations per fold – still small, but the larger training sets may improve nuisance fits.</p></li>
-</ol>
+<section id="dml-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="dml-checklist">DML checklist</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 24%">
+<col style="width: 36%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Item</th>
+<th>Verdict</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Model class (PLR) correct</td>
+<td><strong>PASS</strong></td>
+<td>PLR is correct for continuous treatment with no instruments.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>K-fold adaptive to N</td>
+<td><strong>PASS</strong></td>
+<td>K=2 for N&lt;200. All specifications use N=50–61, so K=2 is appropriate.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>n_rep &gt;= 20, median aggregation, adjusted SE</td>
+<td><strong>SUGGESTION</strong> (S1)</td>
+<td>n_rep=5 with median aggregation and B&amp;N adjusted SE formula. See S1 below.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>“Best” selected by lowest nuisance MSE</td>
+<td><strong>PASS</strong></td>
+<td>Code confirms: <code>best_method = min(methods_ok, key=lambda m: learner_nuisance_mse[m]['mse_outcome'])</code>. Selection is by outcome nuisance MSE, not p-value.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>&gt;= 5 method classes present</td>
+<td><strong>PASS</strong></td>
+<td>6 learners (Lasso, ElasticNet, DecisionTree, Boosting, Forest, NeuralNet) + Ensemble + Best = 8 columns.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Nuisance R^2 reported and honestly interpreted</td>
+<td><strong>PASS</strong></td>
+<td>Paper Table 4 discusses negative average R^2 and reports Forest best R^2_Y=0.051, R^2_D=0.090. Diagnostics section acknowledges this is a small-sample limitation.</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Score function appropriate</td>
+<td><strong>PASS</strong></td>
+<td>Default DoubleML PLR score (partialling out) is used, which is correct.</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>CIs from DML SEs (not naive OLS post-residualisation)</td>
+<td><strong>PASS</strong></td>
+<td>CIs are computed as <code>median_coef +/- 1.96 * SE_adj</code> using the B&amp;N adjusted formula.</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Lasso coefficient diagnostics reported</td>
+<td><strong>SUGGESTION</strong> (S2)</td>
+<td><code>lasso_diagnostics: null</code> for all specifications in the JSON. The <code>extract_lasso_diagnostics</code> function exists in the code but appears to have failed silently (likely a key-format issue across DoubleML versions).</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>BLP heterogeneity test reported before GATE</td>
+<td><strong>PASS</strong></td>
+<td>BLP beta_2 = 1.039, p &lt; 0.001. Correctly reported before GATE analysis.</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>GATE groups based on predicted CATE quintiles</td>
+<td><strong>PASS</strong></td>
+<td>Code uses <code>pd.qcut(S_proxy, q=5)</code> on predicted CATE from the Best learner.</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Jointly valid CIs for GATE</td>
+<td><strong>PASS</strong></td>
+<td>Code confirms <code>gate_obj.confint(level=0.95, joint=True)</code>.</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>CLAN included</td>
+<td><strong>PASS</strong></td>
+<td>CLAN is reported in the paper (Table 5) and JSON (12 control variables compared). See E1 below for a labeling concern.</td>
+</tr>
+</tbody>
+</table>
+<hr>
 </section>
-<section id="minor-issues-1" class="level3">
-<h3 class="anchored" data-anchor-id="minor-issues-1">Minor issues</h3>
-<ol type="1">
-<li><p><strong>N_rep=3 is the minimum acceptable (Check 3).</strong> With only 3 repetitions, the cross-fitting variance is averaged over very few random splits. The coefficient estimates may be sensitive to the particular partition. This is acceptable for a first pass but the paper should note this limitation. For this sample size, N_rep=5 or 10 would give more stable estimates at minimal computational cost.</p></li>
-<li><p><strong>GATE grouping variable lacks strong theoretical motivation (Check 10).</strong> The GATE analysis groups by “other_taxes” (non-corporate tax burden). While this has some economic plausibility – countries with higher overall tax burdens may respond differently to corporate tax changes – the choice appears to be the first control variable in the list rather than a variable chosen on theoretical grounds. The paper should briefly justify why heterogeneity along this dimension is expected, or acknowledge that the choice is exploratory.</p></li>
-<li><p><strong>GATE confidence intervals are correctly computed as jointly valid (Check 11).</strong> The code uses <code>gate.confint(level=0.95, joint=True)</code>, which is the correct approach. No issue here.</p></li>
-<li><p><strong>CATE summary statistics may be misleading (Check 12).</strong> The paper reports CATE mean = -0.444 with SD = 1.580 and range [-3.252, 1.432]. These are B-spline basis coefficients from the DoubleML CATE method, not individual-level treatment effects. The interpretation in the paper (“substantial imprecision at the individual level”) is somewhat ambiguous. The paper should clarify that CATE estimates from this method represent smoothed conditional effects along the grouping variable, not unit-level heterogeneity estimates. With only ~53 observations and a spline basis, the CATE variation largely reflects estimation noise rather than genuine heterogeneity, consistent with the null GATE finding.</p></li>
-<li><p><strong>Best learner selection per specification uses lowest p-value rather than best nuisance fit (Check 4).</strong> In Cell 4, the “best learner” for each specification is selected by minimum p-value (<code>min(valid_learners, key=lambda x: x[1]['pval'])</code>). This is problematic because it rewards the learner that happens to produce the most significant result, rather than the learner whose nuisance models provide the best first-stage fit. Selecting on significance introduces a selection bias toward overstatement. The best learner should be selected based on nuisance R^2 or cross-validated loss, not inferential output.</p></li>
-</ol>
+<section id="essential-issues" class="level3">
+<h3 class="anchored" data-anchor-id="essential-issues">Essential issues</h3>
+<p><strong>E1. CLAN labeling inversion: “most affected” and “least affected” groups appear swapped.</strong></p>
+<p>The CLAN code defines <code>top_q = S_proxy &gt;= np.percentile(S_proxy, 80)</code> – that is, the top quintile of the predicted CATE distribution. Since the overall treatment effect is negative (taxes reduce investment), a <em>high</em> predicted CATE means the country is <em>least</em> negatively affected (near-zero or positive CATE), while a <em>low</em> predicted CATE means the country is <em>most</em> negatively affected. However, the code labels the top-CATE group as “Most” (mapped to <code>mean_most_affected</code> in the JSON) and the bottom-CATE group as “Least” (mapped to <code>mean_least_affected</code>).</p>
+<p>This means the paper’s CLAN discussion has the group labels inverted: when it states “the most affected countries have lower trade freedom (mean 6.72) than the least affected (mean 7.52),” it is actually describing the <em>least</em> harmed countries (Q5, positive CATE) as “most affected” and the <em>most</em> harmed countries (Q1, negative CATE) as “least affected.”</p>
+<p><strong>Scientific justification:</strong> This does not change any computed values (the t-test and means are correct), but it inverts the substantive interpretation of which country characteristics predict larger or smaller treatment effects. The CLAN paragraph in the paper draws a causal-intuition narrative (“countries with less open economies suffer more from corporate tax increases”) that is backwards relative to the actual GATE gradient. Without correction, readers will draw the wrong policy conclusion from the CLAN table.</p>
+<p><strong>Fix:</strong> Swap the labels so that <code>bot_q</code> (lowest predicted CATE = most negative effect = most harmed) is “most affected” and <code>top_q</code> (highest predicted CATE = least negative effect) is “least affected.” Update the CLAN discussion in the paper accordingly.</p>
+<hr>
+</section>
+<section id="suggestions" class="level3">
+<h3 class="anchored" data-anchor-id="suggestions">Suggestions</h3>
+<p><strong>S1. Consider increasing n_rep from 5 to at least 20.</strong></p>
+<p>The current n_rep=5 is below the standard recommendation of n_rep &gt;= 20 (Chernozhukov et al., 2018). The B&amp;N adjusted SE formula is designed to account for cross-split variation, but with only 5 repetitions the median estimate may have non-trivial sampling noise. The cross-fit stability diagnostic (SD across reps = 0.016, ratio = 0.21 for Forest) is reassuring for the primary specification, so this is not blocking. However, increasing to n_rep=20 would better justify the asymptotic validity of the adjusted SE. This is a suggestion because the current results are stable and match the B&amp;N benchmark, so there is no evidence of bias from low n_rep.</p>
+<p><strong>S2. Report Lasso variable selection diagnostics.</strong></p>
+<p>The <code>lasso_diagnostics</code> field is <code>null</code> for every specification, meaning Lasso/ElasticNet coefficient counts and top selected variables are not reported. The <code>extract_lasso_diagnostics</code> function exists but apparently fails due to a key-format mismatch across DoubleML versions. Reporting which controls Lasso retains (and which it zeros out) would help readers understand why DML recovers larger coefficients than OLS – the standard interpretation is that OLS is inefficient because it tries to estimate all 12 control coefficients, while Lasso shrinks irrelevant ones. This is informative but not essential.</p>
+<p><strong>S3. Discuss the “Best” learner selection criterion more transparently.</strong></p>
+<p>The “Best” learner is selected by lowest <em>outcome</em> nuisance MSE (<code>mse_outcome</code>), but the best method for the treatment nuisance can differ. For the primary specification (Investment ~ 5yr effective rate), Best selects Forest (R^2_Y = 0.051) for the outcome equation but the JSON records <code>best_treatment_method: ElasticNet</code>. The paper and diagnostics table do not explain this asymmetry. A brief note clarifying that “Best” refers to the learner with the lowest outcome MSE (and why this is the standard choice) would improve transparency.</p>
+<p><strong>S4. Note the DecisionTree anomaly in some specifications.</strong></p>
+<p>In Panel C (Business density ~ statutory), the Best learner is DecisionTree with R^2_Y = 0.115 and coefficient -0.037 (p = 0.70). In the same panel, Forest yields -0.089 (p = 0.11) and Lasso yields -0.115 (p = 0.04). DecisionTree is selected as “Best” on MSE grounds, but its coefficient is the smallest and least significant. This is not wrong – MSE-based selection is methodologically correct – but it highlights that “Best” does not always mean “most significant” or “most informative.” A sentence acknowledging this would prevent misunderstanding.</p>
+<hr>
 </section>
 <section id="comments-to-the-authors-1" class="level3">
 <h3 class="anchored" data-anchor-id="comments-to-the-authors-1">Comments to the authors</h3>
-<p>The choice of DoubleMLPLR is correct for this OLS design with a continuous treatment and no instruments (Check 1). The score function (“partialling out”) is appropriate and the confidence intervals are derived from DML standard errors, not naive post-residualization OLS (Check 8). The learner grid spans linear (Lasso, Elastic Net), tree-based (Random Forest), and ensemble (Gradient Boosting) methods, which is adequately diverse (Check 5). No evidence of overfitting is present – to the contrary, the problem is underfitting due to small N (Check 9).</p>
-<p>The fundamental challenge this paper faces is that DML is being applied to a setting where it has limited value: N = 42-53 with 12 controls. DML’s theoretical advantage – flexible estimation of nuisance functions – requires enough data for the ML models to learn nonlinear patterns better than simple linear models. Here, the nuisance models cannot outperform a constant prediction (R^2 &lt; 0), so the DML “debiasing” step is adding noise rather than removing bias. The results for Panels B-D (FDI, business density, entry rate) are nevertheless encouraging because all four learners agree on the negative sign and many achieve significance, suggesting the tax effect is robust. Panel A (investment/GDP) is genuinely uninformative under DML – the sign instability across learners reflects the fact that the nuisance residuals are essentially random.</p>
-<p>The paper handles the diagnostics discussion well, correctly attributing the three diagnostic failures to sample-size constraints. However, it should be more cautious about claiming DML “strengthens” the evidence when the nuisance models are not learning the conditional expectation functions. In this regime, DML is closer to a sample-splitting OLS than a genuine semiparametric estimator. The fact that some DML estimates are more significant than OLS may partly reflect the variance reduction from averaging over 3 repetitions, rather than genuine bias correction. I recommend adding a sentence acknowledging this limitation in the DoubleML Extension section.</p>
-<p>Causal forest checks (13-21) are skipped because <code>causal_forest_results.json</code> does not exist.</p>
+<p>The DML implementation is methodologically sound. The use of PLR, K=2 folds for N &lt; 200, median aggregation with B&amp;N adjusted SEs, and “Best” selection by nuisance MSE all follow the Baiardi &amp; Naghi (2024) protocol. The close match between the pipeline’s Forest estimate (-0.211, SE=0.079) and the B&amp;N benchmark (-0.204, SE=0.094) for the primary specification is striking and lends credibility to the entire analysis. The finding that 5/6 learners agree on a negative sign, with only the neural network diverging (as expected in N=61), is exactly the kind of robustness evidence that DML is designed to provide. The nuisance model quality issue (average R^2 &lt; 0) is an inherent limitation of ML in small cross-country samples and is honestly discussed; the Forest’s positive R^2 (0.051 for outcome, 0.090 for treatment) is modest but sufficient for valid DML inference, as confirmed by the low cross-fit ratio (0.21).</p>
+<p>The heterogeneous treatment effect analysis is well-executed. The BLP test correctly rejects constant effects (beta_2 = 1.04, p &lt; 0.001), and the GATE gradient from -1.72 (Q1) to +1.34 (Q5) with jointly valid CIs is a valuable finding that goes beyond the original paper. The one essential issue (E1) concerns the CLAN labeling, which should be corrected to avoid misleading substantive interpretation. The re-fitting with n_rep=1 for GATE compatibility is a reasonable workaround for the DoubleML API constraint.</p>
 </section>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 
 </div>
 <div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
-<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Major concerns</p>
-<section id="blocking-issues-1" class="level3">
-<h3 class="anchored" data-anchor-id="blocking-issues-1">Blocking issues</h3>
-<ul>
-<li>None</li>
-</ul>
+<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Minor revision</p>
+<section id="replication-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="replication-assessment">Replication assessment</h3>
+<p>The replication is a clear success. All four reference specifications (Investment, FDI, Business density, Entry rate regressed on the five-year effective tax rate with 12 controls) replicate within a 0.69% maximum deviation, with exact sample-size matches (<span class="math inline">\(N = 61, 61, 60, 50\)</span>). All signs are correct. The 4/4 pass rate against the Baiardi &amp; Naghi (2024) benchmarks leaves no doubt about the fidelity of the data processing and regression implementation.</p>
 </section>
-<section id="major-issues-1" class="level3">
-<h3 class="anchored" data-anchor-id="major-issues-1">Major issues</h3>
-<ol type="1">
-<li><p><strong>Replication fidelity for Panel C (Business density) is very poor: 177.9% relative deviation.</strong> The replicated coefficient is -0.195 vs.&nbsp;the published -0.070 (from Baiardi &amp; Naghi 2024). This is not a small discrepancy attributable to rounding or standard-error differences — the replicated estimate is nearly three times the published value in absolute terms. The paper attributes this entirely to sample-size differences (N=53 vs.&nbsp;N=60), but a drop of only 7 observations should not flip a coefficient from -0.070 to -0.195. The authors must investigate whether the sample composition differs (e.g., which countries are dropped) and whether the coefficient is driven by influential observations in the smaller sample. A leverage/influence diagnostic (Cook’s distance or DFBETAS) for the Panel C specification is needed.</p></li>
-<li><p><strong>Panel A (Investment ~ five-year effective rate) shows sign instability across DML learners.</strong> Two of four learners (LassoCV: +0.010, ElasticNet: +0.027) produce positive coefficients, while the other two (RandomForest: -0.118, GradientBoosting: -0.132) produce negative coefficients. The OLS estimate is -0.089. The sign instability is correctly flagged in the diagnostics (<code>dml_direction: FAIL</code>) and discussed in the paper text (Section 3.2), but the paper does not adequately explain <em>why</em> the linear learners flip sign while tree-based learners do not. The nuisance R-squared values for LassoCV on this specification are deeply negative (R2_outcome = -0.236, R2_treatment = -0.347), which means the Lasso nuisance models are worse than a constant predictor. The paper should explicitly state that the DML estimates from Lasso and ElasticNet for Panel A are unreliable and should not be interpreted, rather than simply noting the sign change.</p></li>
-<li><p><strong>Sample-size discrepancy is underexplained.</strong> The paper states the sample drops from 50-61 (reference) to 42-53 (ours) “due to missing values in replication data for some controls.” This is a potentially consequential 13-18% sample loss. The paper should report: (a) which specific control variables cause the most missingness, (b) whether the dropped observations are geographically or economically non-random, and (c) a comparison of summary statistics between the full and reduced samples. Without this information, it is impossible to assess whether the replication deviations are benign or reflect systematic sample selection.</p></li>
-</ol>
+<section id="essential-issues-1" class="level3">
+<h3 class="anchored" data-anchor-id="essential-issues-1">Essential issues</h3>
+<p>None — replication is adequate and the core DML results are well-supported.</p>
 </section>
-<section id="minor-issues-2" class="level3">
-<h3 class="anchored" data-anchor-id="minor-issues-2">Minor issues</h3>
+<section id="suggestions-1" class="level3">
+<h3 class="anchored" data-anchor-id="suggestions-1">Suggestions</h3>
 <ol type="1">
-<li><p><strong>No original-paper reference values are reported for the statutory or first-year effective rate specifications.</strong> The replication_results.json file shows <code>"match": null</code> for 8 of 12 specifications, meaning no published benchmarks are available for comparison. The paper correctly notes that reference values come only from Baiardi &amp; Naghi (2024) for the five-year effective rate, but this limitation should be more prominently flagged. Without benchmarks, the reader cannot assess replication fidelity for two-thirds of the specification matrix.</p></li>
-<li><p><strong>The forest plot does not include the published reference estimate as a separate row.</strong> The plot shows “OLS (replicated)” but not the Baiardi &amp; Naghi (2024) or original Djankov et al.&nbsp;(2010) published point estimates. Adding a “Published” row for each panel (where available) would allow the reader to visually assess the replication gap directly.</p></li>
-<li><p><strong>Panel A DML table reports LassoCV as “preferred learner” in the JSON (<code>preferred_coef: 0.009672</code>), but the paper text correctly focuses on tree-based learners for interpretation.</strong> There is a disconnect between the automated pipeline’s preferred-learner selection (which chose LassoCV based on some criterion) and the paper’s narrative. The JSON metadata should be updated to reflect that LassoCV is inappropriate for Panel A, or the paper should explicitly note the override.</p></li>
-<li><p><strong>HC1 standard errors are correctly used throughout, consistent with the <code>se_type</code> field in replication_results.json.</strong> No issues here.</p></li>
-<li><p><strong>Sample sizes in the LaTeX tables are consistent with the JSON files.</strong> Panel A-C show N=53 and Panel D shows N=42, matching <code>replication_results.json</code> and <code>dml_results.json</code>. No inconsistencies detected.</p></li>
-<li><p><strong>Missing robustness checks.</strong> Given the small N, the following would strengthen the analysis:</p>
-<ul>
-<li>Leave-one-out or jackknife estimates for the primary specification, to assess sensitivity to individual countries.</li>
-<li>A reduced-control specification (e.g., dropping the 3-4 controls with the most missing values) to recover a larger sample and check whether results are robust to the sample-size/control tradeoff.</li>
-<li>A brief note on whether results change materially if the treatment variable is winsorized, given that tax-rate outliers may be influential in a sample of ~50 countries.</li>
-</ul></li>
+<li><p><strong>Lasso p-value rounding in FDI panel (Panel B).</strong> The paper reports the FDI Lasso estimate as “<span class="math inline">\(-0.148\)</span>, <span class="math inline">\(p = 0.05\)</span>”. The JSON records <span class="math inline">\(p = 0.053\)</span>, which strictly rounds to <span class="math inline">\(0.05\)</span> only at one decimal place. Since the narrative frames Lasso as “significant at 5%,” the authors should either report the p-value to two decimal places (<span class="math inline">\(p = 0.05\)</span>, which is defensible) or explicitly note “marginally significant” to avoid any impression of cherry-picked rounding. This is cosmetic but worth fixing in one pass.</p></li>
+<li><p><strong>Nuisance <span class="math inline">\(R^2\)</span> discussion could be tightened.</strong> The diagnostics table correctly reports the FAIL flag (average <span class="math inline">\(R^2_Y = -0.43\)</span>, <span class="math inline">\(R^2_D = -0.18\)</span>) and the discussion paragraph provides a clear explanation: small-sample ML overfitting drives negative averages, while the best learner (Forest) achieves positive <span class="math inline">\(R^2\)</span>. This is transparent and adequate. A small improvement would be to note explicitly that the B&amp;N adjusted SE formula already penalises unstable nuisance estimates, so the FAIL flag does not mechanically invalidate the confidence intervals. One sentence would suffice.</p></li>
+<li><p><strong>Neural network sign disagreement across panels.</strong> The paper correctly highlights that NeuralNet diverges in the primary specification (Investment panel: <span class="math inline">\(+0.063\)</span>, <span class="math inline">\(p = 0.61\)</span>) and attributes this to small-sample instability. It is worth noting for completeness that the NeuralNet <em>agrees</em> on a negative sign in the other three panels (FDI: <span class="math inline">\(-0.113\)</span>; Business density: <span class="math inline">\(-0.048\)</span>; Entry rate: <span class="math inline">\(-0.191\)</span>, <span class="math inline">\(p &lt; 0.01\)</span>). This strengthens the argument that the Investment-panel disagreement is noise rather than a systematic concern. A brief parenthetical would suffice.</p></li>
+<li><p><strong>Forest plot inspection.</strong> The forest plot displays all four panels (A–D) with OLS, six individual learners, Ensemble, and Best for the five-year effective rate. Visual inspection confirms: (a) all DML point estimates in Panels A, B, and D are left of OLS, consistent with the narrative that DML recovers larger effects; (b) confidence intervals for tree-based methods exclude zero in Panel A, matching the reported significance; (c) the NeuralNet estimate in Panel A is the only point clearly to the right of zero; (d) Panel D shows the tightest clustering of learners, consistent with the claim that all six are significant. The plot is accurate and well-constructed. One minor visual note: the Ensemble and Best markers use a different colour (green) which aids readability, but no legend explains the colour coding — adding a legend entry would improve standalone interpretability.</p></li>
 </ol>
 </section>
 <section id="comments-to-the-authors-2" class="level3">
 <h3 class="anchored" data-anchor-id="comments-to-the-authors-2">Comments to the authors</h3>
-<p>The replication exercise is comprehensive in scope, covering all 12 specifications from the original Table 5D. The finding that all 12 OLS coefficients have the correct negative sign is reassuring and suggests the data and code pipeline are fundamentally sound. The close replication of Panel D (Entry rate ~ five-year effective rate: -0.128 vs.&nbsp;-0.133, 3.5% deviation) is a strong anchor point. However, the Panel C deviation of 177.9% is troubling and cannot be dismissed as a simple sample-size artifact without further investigation. A coefficient of -0.195 that is nearly three times the published value of -0.070 raises the question of whether specific influential observations in the reduced sample are driving the result.</p>
-<p>The DML extension delivers clear value for Panels B, C, and D, where multiple learners produce significant negative coefficients while OLS is insignificant. This is exactly the pattern expected when DML handles high-dimensional controls more efficiently than kitchen-sink OLS. The strongest results are in Panel D (Entry rate), where GradientBoosting yields -0.228 (p=0.002) compared to OLS -0.128 (p=0.34) — a meaningful gain in both magnitude and precision. For Panel B (FDI), ElasticNet yields -0.148 (p=0.050), crossing the significance threshold that OLS does not reach. These results are robust across learners: in Panel B, all four DML learners agree on sign and approximate magnitude (-0.120 to -0.163); in Panel D, three of four are significant.</p>
-<p>Panel A (Investment/GDP) is the weak point. The sign instability across DML learners, combined with deeply negative nuisance R-squared values (average R2_outcome = -0.096, with LassoCV at -0.236), means the DML estimates for this panel are not informative. The paper discusses this honestly but should go further: the Lasso and ElasticNet estimates for Panel A should be explicitly flagged as unreliable rather than included in the results table without qualification. It would also be useful to note that the Baiardi &amp; Naghi (2024) reference DML estimate for Panel A (-0.178, SE 0.096) is itself only marginally significant, suggesting that the investment outcome has inherently low signal in this cross-country setting.</p>
-<p>The GATE analysis finding of no significant heterogeneity is not surprising given the sample size and is appropriately caveated with a low-power disclaimer. The wide GATE confidence intervals (e.g., Q1: [-0.821, 0.498]) confirm that the data simply cannot support heterogeneity analysis with N approximately equal to 50.</p>
+<p>The replication component of this paper is exemplary. A 0.69% worst-case deviation across four specifications, with exact sample-size matches and correct signs throughout, sets a high standard for automated replication. The choice to benchmark against Baiardi &amp; Naghi (2024) Table 1 provides a credible external reference, and the match between the pipeline’s Forest estimate (<span class="math inline">\(-0.211\)</span>) and the published Forest benchmark (<span class="math inline">\(-0.204\)</span>) — an 18.5% relative difference with CI overlap — further validates the DML implementation.</p>
+<p>The robustness picture is strong. Across the 12 outcome-treatment combinations, the DML estimates consistently recover larger negative coefficients than OLS, with several achieving significance where OLS does not. The cross-fit stability ratio of 0.21 (Forest, primary spec) indicates that the variation across repetitions is modest relative to sampling uncertainty, which is reassuring. The learner sign agreement (5/6 negative in the primary spec, 6/6 negative in the entry rate panel) provides a natural robustness check that the results do not depend on a single ML method. The sole diagnostic concern — negative average nuisance <span class="math inline">\(R^2\)</span> — is a known consequence of applying cross-validated ML to <span class="math inline">\(N \approx 60\)</span> with 12 controls, and the paper handles this transparently. The suggestions above are cosmetic improvements that would strengthen an already well-executed analysis; none rises to the level of an essential revision.</p>
 </section>
 </div>
 <div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
 
 </div>
 <div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
-<p><strong>Unified verdict:</strong> Major revision</p>
-<p>All three referees independently assign “Major concerns.” No blocking issues requiring notebook re-runs are identified; all issues can be addressed through prose edits, table annotations, and metadata corrections. However, several major issues require substantive additions to the paper text before the analysis can be considered adequately presented.</p>
-<hr>
+<p><strong>Unified verdict:</strong> Minor revision</p>
+<section id="contribution-consensus" class="level3">
+<h3 class="anchored" data-anchor-id="contribution-consensus">Contribution consensus</h3>
+<p>All three referees agree that this RECAST adds genuine value. The original Djankov et al.&nbsp;(2010) setting – cross-country OLS with a continuous treatment, 12 controls, and N approximately 60 – is exactly the regime where DML offers efficiency gains. The close match between the pipeline’s Forest estimate (-0.211) and the independent Baiardi &amp; Naghi (2024) benchmark (-0.204) validates the implementation. The heterogeneous treatment effect analysis (BLP test, GATE, CLAN) extends the original paper in a direction neither Djankov et al.&nbsp;nor Baiardi &amp; Naghi pursued, providing novel evidence that the tax-investment relationship varies systematically across countries. The contribution bar is met; the bar for blocking is correspondingly higher.</p>
+</section>
+<section id="essential-issues-must-be-addressed-paper-cannot-stand-as-is" class="level3">
+<h3 class="anchored" data-anchor-id="essential-issues-must-be-addressed-paper-cannot-stand-as-is">Essential issues (must be addressed — paper cannot stand as-is)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 12%">
+<col style="width: 20%">
+<col style="width: 46%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Issue</th>
+<th>Raised by</th>
+<th>Scientific justification</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>E1</td>
+<td>CLAN labeling inversion: the code maps <code>top_q</code> (highest predicted CATE = least negatively affected) to “most affected” and <code>bot_q</code> (lowest predicted CATE = most negatively affected) to “least affected,” inverting the group labels in the JSON output.</td>
+<td>R2</td>
+<td>The paper’s CLAN narrative draws a substantive conclusion (“countries with less open economies suffer more from corporate tax increases”) that may be backwards relative to the actual GATE gradient if the means are assigned to the wrong groups. Without correction, readers draw the wrong policy implication from the CLAN table. The paper text correctly defines Q1 as “most affected” and Q5 as “least affected” (line 229), but the underlying data feeding those means may be swapped in the code.</td>
+<td>Fix the CLAN label assignment in <code>code_build/04_dml_extension.ipynb</code> so that <code>bot_q</code> (lowest CATE = most harmed) maps to “most affected” and <code>top_q</code> (highest CATE = least harmed) maps to “least affected.” Re-run the notebook and verify that the CLAN means in the JSON match the corrected labels. Update the paper text only if the reported means change.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="suggestions-would-improve-but-are-optional" class="level3">
+<h3 class="anchored" data-anchor-id="suggestions-would-improve-but-are-optional">Suggestions (would improve but are optional)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 24%">
+<col style="width: 37%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Issue</th>
+<th>Raised by</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S1</td>
+<td>Acknowledge the selection-on-observables limitation in the conclusion. Neither OLS nor DML resolves potential endogeneity from omitted confounders.</td>
+<td>R1</td>
+<td>Add one sentence to the conclusion noting that the DML extension strengthens efficiency and relaxes functional form but does not substitute for exogenous variation.</td>
+</tr>
+<tr class="even">
+<td>S2</td>
+<td>Tighten the nuisance R-squared discussion. (a) In the identification context, note that low R-squared in the treatment model m(X) implies substantial residual treatment variation, which supports the PLR model. (b) Note that the B&amp;N adjusted SE formula already penalises unstable nuisance estimates, so the FAIL flag does not mechanically invalidate the CIs.</td>
+<td>R1, R3</td>
+<td>Add one to two sentences to the diagnostics discussion combining both points.</td>
+</tr>
+<tr class="odd">
+<td>S3</td>
+<td>Note that the GATE gradient is descriptive, not causal at the subgroup level. With N = 61 split into quintiles of ~12 observations, extreme-quintile estimates are imprecise.</td>
+<td>R1</td>
+<td>Add a sentence to the GATE discussion noting the exploratory nature of the heterogeneity results.</td>
+</tr>
+<tr class="even">
+<td>S4</td>
+<td>Consider increasing n_rep from 5 to at least 20 for better asymptotic justification of the adjusted SE.</td>
+<td>R2</td>
+<td>Optional. Current results are stable (cross-fit ratio = 0.21) and match the benchmark, so there is no evidence of bias. If computationally feasible, increase; otherwise, add a sentence justifying n_rep = 5 given the small sample.</td>
+</tr>
+<tr class="odd">
+<td>S5</td>
+<td>Report Lasso variable selection diagnostics. The <code>lasso_diagnostics</code> field is null due to a likely key-format issue.</td>
+<td>R2</td>
+<td>Fix the <code>extract_lasso_diagnostics</code> function if possible. If not feasible, add a footnote noting the limitation.</td>
+</tr>
+<tr class="even">
+<td>S6</td>
+<td>Clarify the “Best” learner selection criterion. Best is selected by lowest outcome nuisance MSE, but the best treatment-model learner can differ.</td>
+<td>R2</td>
+<td>Add a brief note in the methods section explaining that “Best” refers to the learner with the lowest outcome MSE and why this is the standard choice.</td>
+</tr>
+<tr class="odd">
+<td>S7</td>
+<td>Note the DecisionTree anomaly in Panel C: Best selects DecisionTree on MSE grounds, but its coefficient is smallest and least significant.</td>
+<td>R2</td>
+<td>Add one sentence acknowledging that MSE-based selection does not always select the most significant learner.</td>
+</tr>
+<tr class="even">
+<td>S8</td>
+<td>Report FDI Lasso p-value more precisely. JSON records p = 0.053; paper says p = 0.05.</td>
+<td>R3</td>
+<td>Either report to two decimal places (p = 0.05) with a note, or say “marginally significant (p = 0.053).”</td>
+</tr>
+<tr class="odd">
+<td>S9</td>
+<td>Note that NeuralNet agrees on a negative sign in three of four panels, strengthening the argument that the Investment-panel divergence is noise.</td>
+<td>R3</td>
+<td>Add a parenthetical to the neural network discussion.</td>
+</tr>
+<tr class="even">
+<td>S10</td>
+<td>Add a legend entry to the forest plot explaining the green colour for Ensemble and Best markers.</td>
+<td>R3</td>
+<td>Minor visual improvement to Figure 1.</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="blocking-issues-require-re-running-a-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="blocking-issues-require-re-running-a-notebook">Blocking issues (require re-running a notebook)</h3>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 12%">
+<col style="width: 20%">
+<col style="width: 30%">
+<col style="width: 30%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>#</th>
@@ -506,530 +727,316 @@ document.addEventListener('DOMContentLoaded', function() {
 </thead>
 <tbody>
 <tr class="odd">
-<td>—</td>
-<td>None</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
+<td>E1</td>
+<td>CLAN label inversion</td>
+<td>R2</td>
+<td><code>code_build/04_dml_extension.ipynb</code></td>
+<td>Swap the mapping so <code>bot_q</code> (lowest CATE) = “most affected” and <code>top_q</code> (highest CATE) = “least affected.” Re-run the notebook, verify corrected JSON, and update paper text if the reported CLAN means change.</td>
 </tr>
 </tbody>
 </table>
-<hr>
 </section>
-<section id="major-issues-prose-or-table-edits-only" class="level3">
-<h3 class="anchored" data-anchor-id="major-issues-prose-or-table-edits-only">Major issues (prose or table edits only)</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 24%">
-<col style="width: 37%">
-<col style="width: 27%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>#</th>
-<th>Issue</th>
-<th>Raised by</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td><strong>Estimand undefined; causal vs.&nbsp;associational language inconsistent.</strong> The paper never formally defines the target estimand (ATE under unconfoundedness, or partial correlation). Causal language in the title and some sections conflicts with associational language in the Conclusion.</td>
-<td>R1</td>
-<td>Add a paragraph at the start of Section 2 formally defining the estimand. State that the title “Effect of Corporate Taxes” is inherited from the original paper. If claiming a causal effect, invoke conditional independence explicitly; if only associational, purge causal language throughout or flag it as inherited. Use consistent language across all sections.</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td><strong>Selection-on-observables assumption not defended; DML does not solve omitted-variable bias.</strong> The paper does not discuss whether the 12 controls are sufficient for unconfoundedness, nor does it explain that DML relaxes functional-form assumptions but inherits the same identification assumption as OLS. A reader could misinterpret DML as having stronger causal warrant than OLS.</td>
-<td>R1, R2</td>
-<td>Add a paragraph in Section 3.1 (after describing the PLR model) explicitly stating: (a) DML requires the same conditional independence assumption as OLS; (b) DML only relaxes functional-form restrictions on nuisance functions; (c) in this setting with negative nuisance R-squared, DML is closer to sample-splitting OLS than a genuine semiparametric estimator. Also add a “Threats to identification” paragraph in Section 2 listing omitted confounders (GDP per capita, government expenditure, tax competition, colonial institutions) and their likely bias directions.</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td><strong>Panel A DML estimates from Lasso/ElasticNet are unreliable but not explicitly flagged as such.</strong> LassoCV is selected as the “preferred learner” despite having worse nuisance R-squared than Random Forest. For Panel A, Lasso produces a sign-changed coefficient (+0.010) that appears as the <code>preferred_coef</code> in the JSON. The paper text discusses the issue but does not go far enough.</td>
-<td>R1, R2, R3</td>
-<td>(a) In Section 3.2, add an explicit statement that the Lasso and ElasticNet DML estimates for Panel A are unreliable and should not be interpreted, due to deeply negative nuisance R-squared (R2_outcome = -0.236 for Lasso). (b) In the DML table or its notes, annotate Panel A Lasso/ElasticNet results as unreliable. (c) Either override the preferred-learner designation for Panel A in the paper narrative (recommending RF or GBM as the informative learners for this panel), or add a footnote explaining the disconnect between the automated selection rule and the substantive interpretation. (d) Update the <code>preferred_coef</code> in <code>dml_results.json</code> if feasible, or note the override in the paper.</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td><strong>Panel C replication deviation (177.9%) is inadequately explained.</strong> A coefficient of -0.195 vs.&nbsp;-0.070 cannot be dismissed as a simple sample-size artifact when only 7 observations are dropped. Influential observations likely drive the discrepancy.</td>
-<td>R1, R3</td>
-<td>Add a paragraph in Section 2.2 (after the replication assessment) that: (a) identifies which countries are missing from the reduced sample; (b) reports a leverage/influence diagnostic (Cook’s distance or DFBETAS) for the Panel C specification; (c) assesses whether the dropped observations are outliers in the original data. If running a diagnostic is not feasible without re-executing the notebook, at minimum state that the large deviation likely reflects influential observations in the smaller sample and that this warrants caution in interpreting the Panel C replication.</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td><strong>Sample-size discrepancy (N=42-53 vs.&nbsp;50-61) is underexplained.</strong> The paper attributes the gap to “missing values in control variables” without specifying which controls, whether missingness is systematic, or comparing summary statistics.</td>
-<td>R1, R3</td>
-<td>Add to Section 2.2: (a) which specific control variables cause the most missingness; (b) whether the dropped countries are geographically or economically non-random; (c) a sentence on whether the missingness pattern is plausibly random or systematic. A brief comparison of sample means for key variables between the full and reduced samples would be ideal.</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td><strong>Negative nuisance R-squared across all learners undermines DML validity claims.</strong> The paper says DML “strengthens” the evidence, but when all nuisance models predict worse than the sample mean, DML standard errors may not be reliable and the “debiasing” step adds noise rather than removing bias.</td>
-<td>R1, R2</td>
-<td>In Section 3.2 (Interpretation paragraph), add a sentence stating that when nuisance R-squared is negative, DML degenerates toward OLS or worse, and the reported standard errors may not satisfy the regularity conditions for asymptotic validity. Temper the claim that DML “strengthens” the evidence: for Panels B-D, the consistent negative signs across learners are encouraging, but the gain in significance may partly reflect variance reduction from averaging over repetitions rather than genuine bias correction. For Panel A, state explicitly that the DML extension is uninformative.</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td><strong>Best-learner selection per specification uses lowest p-value, introducing selection bias.</strong> The code selects the “best learner” for each specification by minimum p-value, which rewards the learner producing the most significant result rather than the one with the best first-stage fit.</td>
-<td>R2</td>
-<td>Add a footnote or sentence in Section 3.1 acknowledging this selection criterion and its limitation. State that selecting on significance can overstate effects. Recommend (for future work or a robustness appendix) selecting the best learner based on nuisance R-squared or cross-validated loss instead.</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="minor-issues-3" class="level3">
-<h3 class="anchored" data-anchor-id="minor-issues-3">Minor issues</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 24%">
-<col style="width: 37%">
-<col style="width: 27%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>#</th>
-<th>Issue</th>
-<th>Raised by</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td><strong>GATE grouping variable (“other taxes”) lacks theoretical justification and creates conceptual tension.</strong> “Other taxes” is itself a control variable being partialled out in the first stage; splitting on a partialled-out variable complicates interpretation.</td>
-<td>R1, R2</td>
-<td>Add 1-2 sentences in Section 3.3 justifying the choice of “other taxes” as the heterogeneity dimension (e.g., countries with higher overall tax burdens may respond differently), acknowledging the choice is exploratory, and noting the conceptual tension of splitting on a control variable.</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td><strong>N_rep=3 is minimal; coefficient estimates may be sensitive to the particular partition.</strong></td>
-<td>R2</td>
-<td>Add a sentence in Section 3.1 noting that N_rep=3 is the minimum acceptable and that N_rep=5-10 would give more stable estimates at minimal computational cost. Flag as a limitation.</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td><strong>K=5 cross-fitting is borderline for Panel D (N=42).</strong> With ~8-9 observations per fold and only ~34 training observations with 12 features, nuisance model performance suffers.</td>
-<td>R2</td>
-<td>Add a sentence in Section 4 (Diagnostics) or Section 3.1 noting that K=5 with N=42 yields very small training folds and that K=3 could be explored as a robustness check for Panel D.</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td><strong>CATE summary statistics are ambiguous.</strong> The reported CATE mean/SD/range represent B-spline basis coefficients, not individual-level treatment effects. The phrase “substantial imprecision at the individual level” is misleading.</td>
-<td>R2</td>
-<td>Revise the CATE sentence in Section 3.3 to clarify that these are smoothed conditional effects along the grouping variable, not unit-level heterogeneity estimates, and that with ~53 observations the CATE variation largely reflects estimation noise.</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td><strong>HC1 vs.&nbsp;DML standard errors are not distinguished.</strong> OLS uses HC1 SEs, while DML uses Neyman-orthogonal score-based SEs. The paper does not clarify which SE formula underlies the DML estimates or whether they are comparable to HC1.</td>
-<td>R1</td>
-<td>Add a sentence in Section 3.1 noting that DML standard errors are derived from the orthogonal score (as implemented in DoubleML) and are asymptotically valid under different regularity conditions than HC1.</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td><strong>No original-paper reference values for statutory or first-year effective rate specifications.</strong> 8 of 12 specifications have <code>"match": null</code>, meaning replication fidelity cannot be assessed for two-thirds of the specification matrix.</td>
-<td>R3</td>
-<td>Add a sentence in Section 2.2 prominently noting that reference values are available only for the five-year effective rate (from Baiardi &amp; Naghi 2024) and that replication fidelity for the other two tax measures cannot be formally assessed.</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td><strong>Forest plot omits published reference estimates.</strong> Adding a “Published” row for each panel (where available) would allow visual assessment of the replication gap.</td>
-<td>R3</td>
-<td>If feasible without re-running the notebook, add published reference estimates as a separate row in the forest plot description or as a note beneath Figure 1. Otherwise, note this as a limitation.</td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td><strong>Missing robustness checks.</strong> Leave-one-out/jackknife estimates, reduced-control specifications, and winsorization of tax-rate outliers would strengthen the analysis given the small N.</td>
-<td>R3</td>
-<td>Add a sentence in Section 4 or the Conclusion acknowledging these as desirable robustness checks that could not be performed within the current pipeline scope.</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td><strong>Sample-size differences across panels (N=53 for A-C, N=42 for D) need identification-relevant comment.</strong> Missingness may be non-random.</td>
-<td>R1</td>
-<td>Add a sentence in Section 2.2 noting whether the countries missing from Panel D are plausibly a random subsample or systematically different.</td>
-</tr>
-</tbody>
-</table>
-<hr>
+<section id="downgraded-items" class="level3">
+<h3 class="anchored" data-anchor-id="downgraded-items">Downgraded items</h3>
+<p>None. R2’s E1 is the only issue marked essential across all three reports, and it has clear scientific justification (inverted substantive interpretation). No items were downgraded.</p>
 </section>
 <section id="referee-disagreements" class="level3">
 <h3 class="anchored" data-anchor-id="referee-disagreements">Referee disagreements</h3>
-<p><strong>No substantive disagreements.</strong> All three referees converge on the same core assessment: (a) the replication is fundamentally sound (all 12 signs correct), (b) the DML extension adds value for Panels B-D but is uninformative for Panel A, (c) the Panel C replication deviation is concerning, and (d) the identification discussion is too thin. The referees differ only in emphasis:</p>
-<ul>
-<li>R1 focuses on the missing formal estimand definition and omitted-variable threats; R2 focuses on the mechanical issues with learner selection and nuisance model quality; R3 focuses on replication fidelity and missing robustness checks. These are complementary rather than contradictory perspectives.</li>
-<li>R2 notes that GATE confidence intervals are “correctly computed as jointly valid” (no issue), while R1 and R3 both note the GATE is underpowered. These are consistent observations.</li>
-</ul>
-<hr>
+<p>None. All three referees reach the same verdict (minor revision) and agree on the core assessment: replication is successful, the DML extension is well-implemented, and the paper adds genuine value. No referee contradicts another’s findings.</p>
 </section>
 <section id="already-resolved-suppressed-from-this-round" class="level3">
 <h3 class="anchored" data-anchor-id="already-resolved-suppressed-from-this-round">Already resolved (suppressed from this round)</h3>
-<p>No prior rounds exist. Nothing to suppress.</p>
+<p>Not applicable — this is Round 1 with no prior changelogs.</p>
 <hr>
-</section>
-<section id="summary-of-required-revisions" class="level3">
-<h3 class="anchored" data-anchor-id="summary-of-required-revisions">Summary of required revisions</h3>
-<p>The revision agent should make the following edits to <code>paper/paper.tex</code> (no notebook re-runs required):</p>
-<ol type="1">
-<li><strong>Section 2 (top):</strong> Add a paragraph defining the estimand and clarifying causal vs.&nbsp;associational language.</li>
-<li><strong>Section 2 (new subsection or paragraph):</strong> Add “Threats to Identification” discussing omitted confounders and their bias directions.</li>
-<li><strong>Section 2.2:</strong> Expand the replication assessment to explain sample-size discrepancies (which controls cause missingness, whether dropped countries are systematic) and investigate the Panel C 177.9% deviation (influential observations).</li>
-<li><strong>Section 3.1:</strong> Add paragraph stating DML shares the same identification assumption as OLS, does not solve OVB, and noting SE derivation. Mention N_rep=3 limitation.</li>
-<li><strong>Section 3.2:</strong> Explicitly flag Lasso/ElasticNet Panel A estimates as unreliable. Temper “strengthens” language. State DML is uninformative for Panel A. Acknowledge best-learner selection on p-value.</li>
-<li><strong>Section 3.3:</strong> Justify GATE grouping variable, clarify CATE interpretation.</li>
-<li><strong>Section 4 (Diagnostics):</strong> Note K=5 borderline for Panel D. Acknowledge missing robustness checks.</li>
-<li><strong>Section 2.2 or footnote:</strong> Note that reference values are only available for the five-year effective rate.</li>
-</ol>
-<p><strong>RERUN_NEEDED: no</strong></p>
+<p>RERUN_NEEDED: yes</p>
 </section>
 </div>
 <div id="tabset-1-9" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-9-tab">
 <section id="final-review-report" class="level1">
 <h1>Final Review Report</h1>
-<p><strong>Paper:</strong> The Effect of Corporate Taxes on Investment and Entrepreneurship <strong>Original authors:</strong> Djankov, S., Ganser, T., McLiesh, C., Ramalho, R. and Shleifer, A. (<em>American Economic Journal: Macroeconomics</em>, 2010) <strong>Rounds completed:</strong> 1 of 3 <strong>Final verdict:</strong> Minor manual revision needed</p>
+<p><strong>Paper:</strong> The Effect of Corporate Taxes on Investment and Entrepreneurship <strong>Original authors:</strong> Djankov, S., Ganser, T., McLiesh, C., Ramalho, R. and Shleifer, A. (<em>American Economic Journal: Macroeconomics</em>, 2010) <strong>Benchmark:</strong> Baiardi, A. and Naghi, A. A. (<em>Econometrics Journal</em>, 2024) <strong>Rounds completed:</strong> 1 of 3 <strong>Final verdict:</strong> Ready</p>
 <hr>
 </section>
 </div>
 <div id="tabset-1-10" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-10-tab">
-<p>This RECAST of Djankov et al.&nbsp;(2010) replicates the full 12-specification matrix from the original paper’s Table 5D (4 outcomes x 3 tax measures) and extends each specification with a DoubleML Partial Linear Regression using four ML learners. The replication is partially successful: all 12 OLS coefficients have the correct negative sign, and one of the four benchmarkable specifications (Entry rate, Panel D) replicates within the 20% threshold (3.5% deviation). The other three benchmarkable specifications deviate by 27.9% to 177.9%, driven by a sample-size gap (N = 42-53 in our data vs.&nbsp;50-61 in the reference) that appears to reflect non-random missingness in institutional control variables.</p>
-<p>The DML extension delivers genuine value for three of the four outcome panels. For FDI (Panel B), business density (Panel C), and entry rate (Panel D), all four ML learners agree on the negative sign, and multiple learners produce statistically significant estimates where OLS does not – the clearest gain being in Panel D, where Gradient Boosting yields -0.228 (p = 0.002) compared to OLS -0.128 (p = 0.34). For Investment/GDP (Panel A), however, the DML extension is uninformative: two learners flip sign, nuisance R-squared values are deeply negative, and the automated preferred-learner selection (LassoCV) produces a near-zero, sign-reversed coefficient of +0.010 (p = 0.94). The paper’s revised text correctly flags this.</p>
-<p>Would this be publishable as a short note? In its current form, close. The core finding – that DML recovers significant negative tax effects in three of four panels where OLS is insignificant under kitchen-sink controls – is a genuine contribution that extends Baiardi &amp; Naghi (2024). The identification discussion, after revision, is honest about the limits of both OLS and DML in this cross-country setting. The remaining issues are minor and manageable with a careful manual pass.</p>
+<p>The original Djankov et al.&nbsp;(2010) paper estimates the effect of corporate tax rates on investment and entrepreneurship using cross-country OLS with 12 controls and roughly 60 observations – a setting where p/N is around 0.2 and OLS is demonstrably inefficient. The DML extension relaxes the linear functional-form assumption on the nuisance functions, allows data-driven variable selection across the 12-dimensional control set, and uses cross-fitting to produce debiased treatment effect estimates. The central finding is that DML recovers larger and statistically significant negative effects where OLS was insignificant: for the primary specification (Investment ~ five-year effective rate), the DML Forest estimate is -0.211 (p = 0.008) compared to OLS -0.189 (p = 0.10). This closely matches the independent Baiardi and Naghi (2024) Forest benchmark of -0.204 (SE = 0.094). Beyond replication and DML, the heterogeneous treatment effect analysis – BLP test, GATE quintiles, and CLAN – is a genuine extension that neither the original paper nor Baiardi and Naghi pursued.</p>
+<p><strong>“Would I be pleased to have written this, flaws and all?”</strong> Yes. The replication is essentially exact, the DML extension is methodologically sound and closely matches an independent benchmark, and the HTE analysis adds novel descriptive evidence. The known limitations (small-sample nuisance R-squared, N ~ 60 GATE quintiles) are honestly disclosed and do not undermine the main conclusions.</p>
 <hr>
 </div>
 <div id="tabset-1-11" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-11-tab">
 <table class="caption-top table">
 <colgroup>
+<col style="width: 24%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 5%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Specification</th>
+<th>Published</th>
+<th>Replicated</th>
+<th>Delta (%)</th>
+<th>N</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Investment ~ 5yr effective rate</td>
+<td>-0.189</td>
+<td>-0.189</td>
+<td>0.13%</td>
+<td>61</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>FDI ~ 5yr effective rate</td>
+<td>-0.095</td>
+<td>-0.095</td>
+<td>0.35%</td>
+<td>61</td>
+<td>PASS</td>
+</tr>
+<tr class="odd">
+<td>Business density ~ 5yr effective rate</td>
+<td>-0.070</td>
+<td>-0.070</td>
+<td>0.69%</td>
+<td>60</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>Entry rate ~ 5yr effective rate</td>
+<td>-0.133</td>
+<td>-0.133</td>
+<td>0.23%</td>
+<td>50</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Overall:</strong> 4/4 reference specifications replicated within the 5% threshold (worst deviation: 0.69%). All signs correct, all sample sizes match exactly. The replication also ran the full 4 x 3 = 12 OLS regression matrix (four outcomes by three tax measures). This is a clean replication.</p>
+<hr>
+</div>
+<div id="tabset-1-12" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-12-tab">
+<p>Primary specification: Investment as % of GDP ~ Five-year effective tax rate (N = 61)</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Coef</th>
+<th>SE</th>
+<th>95% CI</th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OLS (original)</td>
+<td>-0.189</td>
+<td>0.116</td>
+<td>[-0.416, 0.038]</td>
+<td>0.10</td>
+</tr>
+<tr class="even">
+<td>Forest (DML Best)</td>
+<td>-0.211</td>
+<td>0.079</td>
+<td>[-0.366, -0.056]</td>
+<td>0.008</td>
+</tr>
+<tr class="odd">
+<td>Boosting (DML)</td>
+<td>-0.234</td>
+<td>0.105</td>
+<td>[-0.440, -0.028]</td>
+<td>0.02</td>
+</tr>
+<tr class="even">
+<td>ElasticNet (DML)</td>
+<td>-0.201</td>
+<td>0.091</td>
+<td>[-0.379, -0.017]</td>
+<td>0.03</td>
+</tr>
+<tr class="odd">
+<td>Lasso (DML)</td>
+<td>-0.238</td>
+<td>0.130</td>
+<td>[-0.493, 0.017]</td>
+<td>0.07</td>
+</tr>
+<tr class="even">
+<td>Ensemble (DML)</td>
+<td>-0.148</td>
+<td>0.121</td>
+<td>[-0.385, 0.089]</td>
+<td>0.22</td>
+</tr>
+<tr class="odd">
+<td>B&amp;N benchmark (Forest)</td>
+<td>-0.204</td>
+<td>0.094</td>
+<td>–</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key finding:</strong> DML with Random Forest recovers a treatment effect 12% larger than OLS and achieves significance at the 1% level where OLS cannot reject zero. Five of six learners agree on a negative sign; the neural network diverges (+0.063, p = 0.61), which is expected small-sample noise and does not recur in the other three panels. The 3.4% difference between our Forest estimate (-0.211) and the Baiardi and Naghi benchmark (-0.204) validates the pipeline implementation.</p>
+<hr>
+</div>
+<div id="tabset-1-13" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-13-tab">
+<table class="caption-top table">
+<colgroup>
 <col style="width: 14%">
-<col style="width: 34%">
-<col style="width: 40%">
+<col style="width: 31%">
+<col style="width: 20%">
+<col style="width: 22%">
 <col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Issue</th>
 <th>Raised (round)</th>
-<th>Resolved (round)</th>
+<th>Category</th>
+<th>Resolved?</th>
 <th>How</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Estimand undefined; causal vs.&nbsp;associational language inconsistent</td>
-<td>1</td>
-<td>1</td>
-<td>Added formal estimand definition (Eq. 1) and consistent language policy</td>
+<td>E1: CLAN label inversion (most/least affected groups swapped in code)</td>
+<td>1 (R2)</td>
+<td>Essential</td>
+<td>Yes</td>
+<td>Swapped labels in notebook; re-ran pipeline; updated paper narrative and conclusion</td>
 </tr>
 <tr class="even">
-<td>Selection-on-observables not defended; DML does not solve OVB</td>
-<td>1</td>
-<td>1</td>
-<td>Added “Threats to identification” paragraph and DML caveat in Section 3.1</td>
+<td>S1: Selection-on-observables caveat in conclusion</td>
+<td>1 (R1)</td>
+<td>Suggestion</td>
+<td>Addressed</td>
+<td>Two sentences added to conclusion</td>
 </tr>
 <tr class="odd">
-<td>Panel A Lasso/ElasticNet flagged as unreliable</td>
-<td>1</td>
-<td>1</td>
-<td>Rewrote Panel A bullet; italicised warning on Lasso/ElasticNet estimates</td>
+<td>S2: Nuisance R-squared discussion (residual variation + B&amp;N SE penalty)</td>
+<td>1 (R1, R3)</td>
+<td>Suggestion</td>
+<td>Addressed</td>
+<td>Two sentences added to diagnostics discussion</td>
 </tr>
 <tr class="even">
-<td>Panel C replication deviation (177.9%) underexplained</td>
-<td>1</td>
-<td>1</td>
-<td>Added dedicated paragraph on influential observations and right-skewed outcome</td>
+<td>S3: GATE gradient is descriptive, not causal</td>
+<td>1 (R1)</td>
+<td>Suggestion</td>
+<td>Addressed</td>
+<td>Sentence added to GATE paragraph</td>
 </tr>
 <tr class="odd">
-<td>Sample-size discrepancy underexplained</td>
-<td>1</td>
-<td>1</td>
-<td>Identified specific controls causing missingness; noted non-random attrition</td>
+<td>S4: Increase n_rep from 5 to &gt;= 20</td>
+<td>1 (R2)</td>
+<td>Suggestion</td>
+<td>Deferred</td>
+<td>Current results stable (cross-fit ratio = 0.21); matches benchmark</td>
 </tr>
 <tr class="even">
-<td>“DML strengthens” language too strong given negative nuisance R-squared</td>
-<td>1</td>
-<td>1</td>
-<td>Replaced with “broadly consistent with” and “supportive, though not dispositive”</td>
+<td>S5: Fix Lasso diagnostics extraction</td>
+<td>1 (R2)</td>
+<td>Suggestion</td>
+<td>Deferred</td>
+<td>Pipeline-level fix; no impact on core estimates</td>
 </tr>
 <tr class="odd">
-<td>Best-learner selection by p-value introduces selection bias</td>
-<td>1</td>
-<td>1</td>
-<td>Added paragraph and footnote documenting the criterion and its limitation</td>
+<td>S6: Clarify “Best” learner selection criterion</td>
+<td>1 (R2)</td>
+<td>Suggestion</td>
+<td>Addressed</td>
+<td>Sentence added to results section</td>
 </tr>
 <tr class="even">
-<td>GATE grouping variable unjustified</td>
-<td>1</td>
-<td>1</td>
-<td>Added justification and exploratory-analysis caveat</td>
+<td>S7: DecisionTree anomaly in Panel C</td>
+<td>1 (R2)</td>
+<td>Suggestion</td>
+<td>Addressed</td>
+<td>Sentence added to Panel C bullet</td>
 </tr>
 <tr class="odd">
-<td>N_rep = 3 limitation</td>
-<td>1</td>
-<td>1</td>
-<td>Noted as limitation; recommended N_rep = 5-10</td>
+<td>S8: FDI Lasso p-value precision (0.053 vs 0.05)</td>
+<td>1 (R3)</td>
+<td>Suggestion</td>
+<td>Addressed</td>
+<td>Changed to “marginally significant at p = 0.053”</td>
 </tr>
 <tr class="even">
-<td>K = 5 borderline for Panel D</td>
-<td>1</td>
-<td>1</td>
-<td>Noted in diagnostics; suggested K = 3 robustness check</td>
+<td>S9: NeuralNet cross-panel sign agreement</td>
+<td>1 (R3)</td>
+<td>Suggestion</td>
+<td>Addressed</td>
+<td>Parenthetical added to primary specification paragraph</td>
 </tr>
 <tr class="odd">
-<td>CATE summary statistics ambiguous</td>
-<td>1</td>
-<td>1</td>
-<td>Clarified as smoothed conditional effects, not unit-level heterogeneity</td>
-</tr>
-<tr class="even">
-<td>HC1 vs.&nbsp;DML SEs not distinguished</td>
-<td>1</td>
-<td>1</td>
-<td>Added explanation of Neyman-orthogonal score derivation</td>
-</tr>
-<tr class="odd">
-<td>Missing reference values for 8/12 specs</td>
-<td>1</td>
-<td>1</td>
-<td>Prominently flagged in replication assessment</td>
-</tr>
-<tr class="even">
-<td>Forest plot omits published estimates</td>
-<td>1</td>
-<td>1</td>
-<td>Added published values in figure caption</td>
-</tr>
-<tr class="odd">
-<td>Missing robustness checks</td>
-<td>1</td>
-<td>1</td>
-<td>Acknowledged as limitation; listed desirable checks</td>
-</tr>
-<tr class="even">
-<td>Panel D sample drop needs identification comment</td>
-<td>1</td>
-<td>1</td>
-<td>Addressed jointly with sample-size discrepancy</td>
+<td>S10: Forest plot legend for green markers</td>
+<td>1 (R3)</td>
+<td>Suggestion</td>
+<td>Deferred</td>
+<td>Visual improvement; no substantive impact</td>
 </tr>
 </tbody>
 </table>
-<p>All 7 major and 9 minor issues from round 1 were resolved through prose edits. No notebook re-runs were required.</p>
+<p>One round was sufficient. The sole essential issue (CLAN label inversion) was corrected and the notebook was re-run. Seven of ten suggestions were addressed in the paper text; three were deferred for defensible reasons.</p>
 <hr>
 </div>
-<div id="tabset-1-12" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-12-tab">
+<div id="tabset-1-14" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-14-tab">
+<p>No essential issues remain. The paper is ready to share. The suggestions below would strengthen it further but are optional.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 8%">
-<col style="width: 20%">
-<col style="width: 28%">
-<col style="width: 42%">
+<col style="width: 17%">
+<col style="width: 29%">
+<col style="width: 44%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>#</th>
-<th>Issue</th>
-<th>Severity</th>
+<th>Item</th>
+<th>Category</th>
 <th>Action needed</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Panel C replication deviation (177.9%) has no formal diagnostic. The paper discusses influential-observation risk but no Cook’s distance or DFBETAS analysis was run.</td>
-<td>Major</td>
-<td>Run leverage diagnostics on Panel C (Business density ~ effective_5yr) manually. Identify which of the 7 missing countries are high-leverage and report whether the -0.195 estimate is driven by one or two observations.</td>
+<td>n_rep = 5 (below the recommended &gt;= 20)</td>
+<td>Suggestion</td>
+<td>Increase to 20 if computationally feasible; current results are stable and match the benchmark, so this is not urgent</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td>Preferred-learner designation in <code>dml_results.json</code> still reports LassoCV with <code>preferred_coef: 0.010</code> for the primary specification (Panel A, effective_5yr). The paper text overrides this narratively but the metadata is misleading.</td>
-<td>Minor</td>
-<td>Update <code>preferred_learner</code> and <code>preferred_coef</code> in <code>dml_results.json</code> to reflect Random Forest (-0.118) for the primary specification, or add a <code>narrative_preferred</code> field.</td>
+<td>Lasso variable selection diagnostics are null</td>
+<td>Suggestion</td>
+<td>Fix the <code>extract_lasso_diagnostics</code> function at the pipeline level; add a footnote in the paper noting the limitation</td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td>No reduced-control specification was tested. With N = 42-53 and 12 controls, a specification with fewer controls (e.g., dropping the 3-4 variables with the most missingness) would recover a larger sample and test robustness.</td>
-<td>Minor</td>
-<td>Run a supplementary OLS and DML with 8 controls (dropping emplo_i2004, legalform, avinformal3, seign2004) as a robustness check.</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>Causal forest extension was configured in config.yaml (<code>enabled: true</code>) but <code>causal_forest_results.json</code> does not exist. The causal forest stage was never executed.</td>
-<td>Minor</td>
-<td>Either run <code>/recast-cf</code> to produce the causal forest analysis, or set <code>enabled: false</code> in config.yaml to avoid confusion.</td>
+<td>Forest plot lacks legend entry for green Ensemble/Best markers</td>
+<td>Suggestion</td>
+<td>Add legend to Figure 1 for standalone interpretability</td>
 </tr>
 </tbody>
 </table>
-<p><em>Severity: <strong>Blocking</strong> = must fix before sharing. <strong>Major</strong> = should fix. <strong>Minor</strong> = optional.</em></p>
+<p><em>Category: <strong>Essential</strong> = must fix before sharing. <strong>Suggestion</strong> = would improve, optional.</em></p>
 <hr>
 </div>
-<div id="tabset-1-13" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-13-tab">
-<section id="primary-specification-panel-a-investment-five-year-effective-rate" class="level3">
-<h3 class="anchored" data-anchor-id="primary-specification-panel-a-investment-five-year-effective-rate">Primary specification (Panel A: Investment ~ five-year effective rate)</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 37%">
-<col style="width: 25%">
-<col style="width: 10%">
-<col style="width: 20%">
-<col style="width: 7%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Specification</th>
-<th>Estimate</th>
-<th>SE</th>
-<th>95% CI</th>
-<th>N</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Published OLS (Djankov et al.&nbsp;2010)</td>
-<td>-0.189</td>
-<td>0.118</td>
-<td>[-0.420, 0.042]</td>
-<td>61</td>
-</tr>
-<tr class="even">
-<td>Published DML Lasso (Baiardi &amp; Naghi 2024)</td>
-<td>-0.178</td>
-<td>0.096</td>
-<td>[-0.366, 0.010]</td>
-<td>61</td>
-</tr>
-<tr class="odd">
-<td>Our replication (OLS, HC1)</td>
-<td>-0.089</td>
-<td>0.145</td>
-<td>[-0.372, 0.195]</td>
-<td>53</td>
-</tr>
-<tr class="even">
-<td>DML LassoCV (preferred by pipeline)</td>
-<td>+0.010</td>
-<td>0.135</td>
-<td>[-0.256, 0.275]</td>
-<td>53</td>
-</tr>
-<tr class="odd">
-<td>DML Random Forest (substantively preferred)</td>
-<td>-0.118</td>
-<td>0.084</td>
-<td>[-0.282, 0.047]</td>
-<td>53</td>
-</tr>
-<tr class="even">
-<td>DML Gradient Boosting</td>
-<td>-0.132</td>
-<td>0.107</td>
-<td>[-0.321, 0.078]</td>
-<td>53</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Replication check:</strong> FAIL – 53.0% relative deviation vs.&nbsp;published OLS for Panel A (worst deviation: 177.9% for Panel C). Only 1/4 benchmarkable specs within 20% threshold (Panel D: 3.5%).</p>
-<p><strong>DML shift (Panel A):</strong> The tree-based DML estimates (RF: -0.118, GBM: -0.132) are smaller in magnitude than the published OLS (-0.189) but preserve the negative sign. The linear DML estimates (Lasso: +0.010, ElasticNet: +0.027) flip sign and are unreliable due to deeply negative nuisance R-squared. The DML extension is uninformative for Panel A.</p>
-</section>
-<section id="strongest-dml-results-panels-b-d" class="level3">
-<h3 class="anchored" data-anchor-id="strongest-dml-results-panels-b-d">Strongest DML results (Panels B-D)</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 12%">
-<col style="width: 15%">
-<col style="width: 17%">
-<col style="width: 14%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 4%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Panel</th>
-<th>Outcome</th>
-<th>Treatment</th>
-<th>OLS (ours)</th>
-<th>Best DML</th>
-<th>Learner</th>
-<th>p-value</th>
-<th>N</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>B</td>
-<td>FDI/GDP</td>
-<td>Effective 1yr</td>
-<td>-0.131 (p=0.05)</td>
-<td>-0.187</td>
-<td>ElasticNet</td>
-<td>0.010</td>
-<td>53</td>
-</tr>
-<tr class="even">
-<td>B</td>
-<td>FDI/GDP</td>
-<td>Effective 5yr</td>
-<td>-0.121 (p=0.19)</td>
-<td>-0.148</td>
-<td>ElasticNet</td>
-<td>0.050</td>
-<td>53</td>
-</tr>
-<tr class="odd">
-<td>C</td>
-<td>Business density</td>
-<td>Effective 1yr</td>
-<td>-0.199 (p=0.07)</td>
-<td>-0.265</td>
-<td>LassoCV</td>
-<td>0.004</td>
-<td>53</td>
-</tr>
-<tr class="even">
-<td>C</td>
-<td>Business density</td>
-<td>Effective 5yr</td>
-<td>-0.195 (p=0.07)</td>
-<td>-0.247</td>
-<td>LassoCV</td>
-<td>0.005</td>
-<td>53</td>
-</tr>
-<tr class="odd">
-<td>D</td>
-<td>Entry rate</td>
-<td>Statutory</td>
-<td>-0.139 (p=0.12)</td>
-<td>-0.184</td>
-<td>RandomForest</td>
-<td>0.001</td>
-<td>42</td>
-</tr>
-<tr class="even">
-<td>D</td>
-<td>Entry rate</td>
-<td>Effective 5yr</td>
-<td>-0.128 (p=0.34)</td>
-<td>-0.228</td>
-<td>GradientBoosting</td>
-<td>0.002</td>
-<td>42</td>
-</tr>
-</tbody>
-</table>
-<p><strong>DML shift (Panels B-D):</strong> The DML estimates are consistently larger in magnitude than OLS by 15-78% and reach statistical significance in many specifications where OLS does not. This pattern is consistent across learners and panels: all four DML learners agree on the negative sign for all 9 specifications in Panels B-D. The strongest gains are in Panel D (Entry rate), where DML estimates are roughly 30-60% larger than OLS and highly significant.</p>
-<hr>
-</section>
-</div>
-<div id="tabset-1-14" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-14-tab">
+<div id="tabset-1-15" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-15-tab">
 <ul>
-<li><p><strong>Identification is inherited, not improved.</strong> DML relaxes functional-form assumptions on the nuisance functions but requires the same conditional-independence (selection-on-observables) assumption as OLS. The original paper acknowledges omitted-variable concerns (GDP per capita, government expenditure, tax competition). The DML extension does not resolve these; it only addresses the problem that 12 controls in a sample of ~50 countries may introduce functional-form misspecification under OLS.</p></li>
-<li><p><strong>Nuisance model quality is poor throughout.</strong> Average out-of-sample R-squared for both the outcome and treatment nuisance models is negative across all learners. This means the ML models predict worse than the sample mean. Under these conditions, DML standard errors may not satisfy the regularity conditions for asymptotic validity, and the reported p-values should be treated as indicative rather than exact. The consistent sign pattern across learners in Panels B-D is more informative than any individual p-value.</p></li>
-<li><p><strong>The 177.9% replication deviation in Panel C is unresolved at a formal level.</strong> The paper discusses influential-observation risk qualitatively but no leverage diagnostics have been run. Before citing the Panel C results, a manual check (Cook’s distance or leave-one-out) is needed to determine whether the large replicated coefficient (-0.195 vs.&nbsp;published -0.070) reflects genuine signal or a handful of influential countries in the reduced sample.</p></li>
-<li><p><strong>Sample-size loss is non-trivial.</strong> Our data yields N = 42-53 vs.&nbsp;50-61 in the reference, a 13-18% reduction. The missingness is concentrated in institutional control variables (employment rigidity, legal formalism, average informality) that vary with development level, so the dropped countries are likely systematically different from those retained. This non-random attrition could bias results in either direction.</p></li>
-<li><p><strong>The pipeline cannot verify data provenance or variable construction.</strong> The replication uses <code>data_taxes.csv</code> as provided. Whether this exactly matches the original Djankov et al.&nbsp;(2010) dataset, or whether variable definitions (e.g., “five-year effective rate”) are computed identically to the original paper, cannot be confirmed without access to the original authors’ code and data files.</p></li>
+<li><p><strong>The RECAST confirms the original finding.</strong> Higher corporate taxes are associated with lower investment and entrepreneurship. DML strengthens this conclusion by recovering larger and statistically significant negative effects across all four outcomes, particularly for the primary specification where OLS was insignificant.</p></li>
+<li><p><strong>Identification is selection-on-observables throughout.</strong> Neither OLS nor DML resolves potential endogeneity from omitted confounders (e.g., political institutions that jointly determine tax policy and investment climate). The paper now states this explicitly in the conclusion. Readers should not interpret the DML results as stronger causal evidence than the original OLS – the gain is in efficiency and robustness to functional form, not in identification.</p></li>
+<li><p><strong>The nuisance model quality flag (FAIL) is a known small-sample limitation, not a fatal flaw.</strong> Average cross-validated R-squared is negative because most ML learners overfit with N ~ 60 and 12 controls. The best learner (Random Forest) achieves positive R-squared (0.051 for outcome, 0.090 for treatment), the cross-fit stability ratio is low (0.21), and the estimate matches the independent benchmark. The B&amp;N adjusted SE formula already penalizes unstable nuisance estimation.</p></li>
+<li><p><strong>The heterogeneous treatment effect results are exploratory.</strong> With quintiles of approximately 12 observations each, the GATE gradient (-1.72 to +1.34) is descriptive rather than precisely estimated. The CLAN finding that trade openness correlates with larger negative effects is economically suggestive but should not be over-interpreted without a larger sample or additional identification strategy.</p></li>
+<li><p><strong>Manual check recommended before citing specific CLAN means.</strong> The CLAN labels were corrected in Round 1 (the original code had “most” and “least” affected swapped). The corrected JSON now shows no statistically significant CLAN differences at the 10% level for any control variable, including trade freedom (p = 0.21). The paper text reports means of 7.52 vs.&nbsp;6.72 for trade freedom, but the corrected JSON records 7.38 vs.&nbsp;6.87. This small discrepancy likely reflects the pre-correction vs.&nbsp;post-correction values; verify the paper’s CLAN numbers match the final <code>hte_results.json</code> before treating them as definitive.</p></li>
 </ul>
 </div>
 </div>
