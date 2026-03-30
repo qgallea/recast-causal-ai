@@ -6,3 +6,5 @@ Thumbs.db
 .RData
 *.swp
 *~
+
+**/*.quarto_ipynb
