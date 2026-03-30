@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>synthesis – RECAST</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-e57afe155632aaa660b5c675715ddaef.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">RECAST</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../papers.html"> 
+<span class="menu-text">Papers</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../submissions.html"> 
+<span class="menu-text">Tracker</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../submit.html"> 
+<span class="menu-text">Submit</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../framework.html"> 
+<span class="menu-text">Framework</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/qgallea/recast-causal-ai"> <i class="bi bi-github" role="img" aria-label="GitHub repository">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#synthesis-report-round-1" id="toc-synthesis-report-round-1" class="nav-link active" data-scroll-target="#synthesis-report-round-1">Synthesis Report — Round 1</a></li>
+  </ul>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+<div class="construction-banner">
+<p>🚧 <strong>Under construction &amp; testing</strong> — This site is in active development. Results have not been independently verified. Do not cite or rely on any output without manual review.</p>
+</div>
+<section id="synthesis-report-round-1" class="level2">
+<h2 class="anchored" data-anchor-id="synthesis-report-round-1">Synthesis Report — Round 1</h2>
+<p><strong>Unified verdict:</strong> Major revision</p>
+<p>All three referees independently assign “Major concerns.” No blocking issues requiring notebook re-runs are identified; all issues can be addressed through prose edits, table annotations, and metadata corrections. However, several major issues require substantive additions to the paper text before the analysis can be considered adequately presented.</p>
+<hr>
+<section id="blocking-issues-require-re-running-a-notebook" class="level3">
+<h3 class="anchored" data-anchor-id="blocking-issues-require-re-running-a-notebook">Blocking issues (require re-running a notebook)</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Issue</th>
+<th>Raised by</th>
+<th>Notebook to fix</th>
+<th>Specific action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>—</td>
+<td>None</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="major-issues-prose-or-table-edits-only" class="level3">
+<h3 class="anchored" data-anchor-id="major-issues-prose-or-table-edits-only">Major issues (prose or table edits only)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 24%">
+<col style="width: 37%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Issue</th>
+<th>Raised by</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong>Estimand undefined; causal vs.&nbsp;associational language inconsistent.</strong> The paper never formally defines the target estimand (ATE under unconfoundedness, or partial correlation). Causal language in the title and some sections conflicts with associational language in the Conclusion.</td>
+<td>R1</td>
+<td>Add a paragraph at the start of Section 2 formally defining the estimand. State that the title “Effect of Corporate Taxes” is inherited from the original paper. If claiming a causal effect, invoke conditional independence explicitly; if only associational, purge causal language throughout or flag it as inherited. Use consistent language across all sections.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>Selection-on-observables assumption not defended; DML does not solve omitted-variable bias.</strong> The paper does not discuss whether the 12 controls are sufficient for unconfoundedness, nor does it explain that DML relaxes functional-form assumptions but inherits the same identification assumption as OLS. A reader could misinterpret DML as having stronger causal warrant than OLS.</td>
+<td>R1, R2</td>
+<td>Add a paragraph in Section 3.1 (after describing the PLR model) explicitly stating: (a) DML requires the same conditional independence assumption as OLS; (b) DML only relaxes functional-form restrictions on nuisance functions; (c) in this setting with negative nuisance R-squared, DML is closer to sample-splitting OLS than a genuine semiparametric estimator. Also add a “Threats to identification” paragraph in Section 2 listing omitted confounders (GDP per capita, government expenditure, tax competition, colonial institutions) and their likely bias directions.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>Panel A DML estimates from Lasso/ElasticNet are unreliable but not explicitly flagged as such.</strong> LassoCV is selected as the “preferred learner” despite having worse nuisance R-squared than Random Forest. For Panel A, Lasso produces a sign-changed coefficient (+0.010) that appears as the <code>preferred_coef</code> in the JSON. The paper text discusses the issue but does not go far enough.</td>
+<td>R1, R2, R3</td>
+<td>(a) In Section 3.2, add an explicit statement that the Lasso and ElasticNet DML estimates for Panel A are unreliable and should not be interpreted, due to deeply negative nuisance R-squared (R2_outcome = -0.236 for Lasso). (b) In the DML table or its notes, annotate Panel A Lasso/ElasticNet results as unreliable. (c) Either override the preferred-learner designation for Panel A in the paper narrative (recommending RF or GBM as the informative learners for this panel), or add a footnote explaining the disconnect between the automated selection rule and the substantive interpretation. (d) Update the <code>preferred_coef</code> in <code>dml_results.json</code> if feasible, or note the override in the paper.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>Panel C replication deviation (177.9%) is inadequately explained.</strong> A coefficient of -0.195 vs.&nbsp;-0.070 cannot be dismissed as a simple sample-size artifact when only 7 observations are dropped. Influential observations likely drive the discrepancy.</td>
+<td>R1, R3</td>
+<td>Add a paragraph in Section 2.2 (after the replication assessment) that: (a) identifies which countries are missing from the reduced sample; (b) reports a leverage/influence diagnostic (Cook’s distance or DFBETAS) for the Panel C specification; (c) assesses whether the dropped observations are outliers in the original data. If running a diagnostic is not feasible without re-executing the notebook, at minimum state that the large deviation likely reflects influential observations in the smaller sample and that this warrants caution in interpreting the Panel C replication.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong>Sample-size discrepancy (N=42-53 vs.&nbsp;50-61) is underexplained.</strong> The paper attributes the gap to “missing values in control variables” without specifying which controls, whether missingness is systematic, or comparing summary statistics.</td>
+<td>R1, R3</td>
+<td>Add to Section 2.2: (a) which specific control variables cause the most missingness; (b) whether the dropped countries are geographically or economically non-random; (c) a sentence on whether the missingness pattern is plausibly random or systematic. A brief comparison of sample means for key variables between the full and reduced samples would be ideal.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong>Negative nuisance R-squared across all learners undermines DML validity claims.</strong> The paper says DML “strengthens” the evidence, but when all nuisance models predict worse than the sample mean, DML standard errors may not be reliable and the “debiasing” step adds noise rather than removing bias.</td>
+<td>R1, R2</td>
+<td>In Section 3.2 (Interpretation paragraph), add a sentence stating that when nuisance R-squared is negative, DML degenerates toward OLS or worse, and the reported standard errors may not satisfy the regularity conditions for asymptotic validity. Temper the claim that DML “strengthens” the evidence: for Panels B-D, the consistent negative signs across learners are encouraging, but the gain in significance may partly reflect variance reduction from averaging over repetitions rather than genuine bias correction. For Panel A, state explicitly that the DML extension is uninformative.</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><strong>Best-learner selection per specification uses lowest p-value, introducing selection bias.</strong> The code selects the “best learner” for each specification by minimum p-value, which rewards the learner producing the most significant result rather than the one with the best first-stage fit.</td>
+<td>R2</td>
+<td>Add a footnote or sentence in Section 3.1 acknowledging this selection criterion and its limitation. State that selecting on significance can overstate effects. Recommend (for future work or a robustness appendix) selecting the best learner based on nuisance R-squared or cross-validated loss instead.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="minor-issues" class="level3">
+<h3 class="anchored" data-anchor-id="minor-issues">Minor issues</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 24%">
+<col style="width: 37%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Issue</th>
+<th>Raised by</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong>GATE grouping variable (“other taxes”) lacks theoretical justification and creates conceptual tension.</strong> “Other taxes” is itself a control variable being partialled out in the first stage; splitting on a partialled-out variable complicates interpretation.</td>
+<td>R1, R2</td>
+<td>Add 1-2 sentences in Section 3.3 justifying the choice of “other taxes” as the heterogeneity dimension (e.g., countries with higher overall tax burdens may respond differently), acknowledging the choice is exploratory, and noting the conceptual tension of splitting on a control variable.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>N_rep=3 is minimal; coefficient estimates may be sensitive to the particular partition.</strong></td>
+<td>R2</td>
+<td>Add a sentence in Section 3.1 noting that N_rep=3 is the minimum acceptable and that N_rep=5-10 would give more stable estimates at minimal computational cost. Flag as a limitation.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>K=5 cross-fitting is borderline for Panel D (N=42).</strong> With ~8-9 observations per fold and only ~34 training observations with 12 features, nuisance model performance suffers.</td>
+<td>R2</td>
+<td>Add a sentence in Section 4 (Diagnostics) or Section 3.1 noting that K=5 with N=42 yields very small training folds and that K=3 could be explored as a robustness check for Panel D.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>CATE summary statistics are ambiguous.</strong> The reported CATE mean/SD/range represent B-spline basis coefficients, not individual-level treatment effects. The phrase “substantial imprecision at the individual level” is misleading.</td>
+<td>R2</td>
+<td>Revise the CATE sentence in Section 3.3 to clarify that these are smoothed conditional effects along the grouping variable, not unit-level heterogeneity estimates, and that with ~53 observations the CATE variation largely reflects estimation noise.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong>HC1 vs.&nbsp;DML standard errors are not distinguished.</strong> OLS uses HC1 SEs, while DML uses Neyman-orthogonal score-based SEs. The paper does not clarify which SE formula underlies the DML estimates or whether they are comparable to HC1.</td>
+<td>R1</td>
+<td>Add a sentence in Section 3.1 noting that DML standard errors are derived from the orthogonal score (as implemented in DoubleML) and are asymptotically valid under different regularity conditions than HC1.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong>No original-paper reference values for statutory or first-year effective rate specifications.</strong> 8 of 12 specifications have <code>"match": null</code>, meaning replication fidelity cannot be assessed for two-thirds of the specification matrix.</td>
+<td>R3</td>
+<td>Add a sentence in Section 2.2 prominently noting that reference values are available only for the five-year effective rate (from Baiardi &amp; Naghi 2024) and that replication fidelity for the other two tax measures cannot be formally assessed.</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><strong>Forest plot omits published reference estimates.</strong> Adding a “Published” row for each panel (where available) would allow visual assessment of the replication gap.</td>
+<td>R3</td>
+<td>If feasible without re-running the notebook, add published reference estimates as a separate row in the forest plot description or as a note beneath Figure 1. Otherwise, note this as a limitation.</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td><strong>Missing robustness checks.</strong> Leave-one-out/jackknife estimates, reduced-control specifications, and winsorization of tax-rate outliers would strengthen the analysis given the small N.</td>
+<td>R3</td>
+<td>Add a sentence in Section 4 or the Conclusion acknowledging these as desirable robustness checks that could not be performed within the current pipeline scope.</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td><strong>Sample-size differences across panels (N=53 for A-C, N=42 for D) need identification-relevant comment.</strong> Missingness may be non-random.</td>
+<td>R1</td>
+<td>Add a sentence in Section 2.2 noting whether the countries missing from Panel D are plausibly a random subsample or systematically different.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="referee-disagreements" class="level3">
+<h3 class="anchored" data-anchor-id="referee-disagreements">Referee disagreements</h3>
+<p><strong>No substantive disagreements.</strong> All three referees converge on the same core assessment: (a) the replication is fundamentally sound (all 12 signs correct), (b) the DML extension adds value for Panels B-D but is uninformative for Panel A, (c) the Panel C replication deviation is concerning, and (d) the identification discussion is too thin. The referees differ only in emphasis:</p>
+<ul>
+<li>R1 focuses on the missing formal estimand definition and omitted-variable threats; R2 focuses on the mechanical issues with learner selection and nuisance model quality; R3 focuses on replication fidelity and missing robustness checks. These are complementary rather than contradictory perspectives.</li>
+<li>R2 notes that GATE confidence intervals are “correctly computed as jointly valid” (no issue), while R1 and R3 both note the GATE is underpowered. These are consistent observations.</li>
+</ul>
+<hr>
+</section>
+<section id="already-resolved-suppressed-from-this-round" class="level3">
+<h3 class="anchored" data-anchor-id="already-resolved-suppressed-from-this-round">Already resolved (suppressed from this round)</h3>
+<p>No prior rounds exist. Nothing to suppress.</p>
+<hr>
+</section>
+<section id="summary-of-required-revisions" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-required-revisions">Summary of required revisions</h3>
+<p>The revision agent should make the following edits to <code>paper/paper.tex</code> (no notebook re-runs required):</p>
+<ol type="1">
+<li><strong>Section 2 (top):</strong> Add a paragraph defining the estimand and clarifying causal vs.&nbsp;associational language.</li>
+<li><strong>Section 2 (new subsection or paragraph):</strong> Add “Threats to Identification” discussing omitted confounders and their bias directions.</li>
+<li><strong>Section 2.2:</strong> Expand the replication assessment to explain sample-size discrepancies (which controls cause missingness, whether dropped countries are systematic) and investigate the Panel C 177.9% deviation (influential observations).</li>
+<li><strong>Section 3.1:</strong> Add paragraph stating DML shares the same identification assumption as OLS, does not solve OVB, and noting SE derivation. Mention N_rep=3 limitation.</li>
+<li><strong>Section 3.2:</strong> Explicitly flag Lasso/ElasticNet Panel A estimates as unreliable. Temper “strengthens” language. State DML is uninformative for Panel A. Acknowledge best-learner selection on p-value.</li>
+<li><strong>Section 3.3:</strong> Justify GATE grouping variable, clarify CATE interpretation.</li>
+<li><strong>Section 4 (Diagnostics):</strong> Note K=5 borderline for Panel D. Acknowledge missing robustness checks.</li>
+<li><strong>Section 2.2 or footnote:</strong> Note that reference values are only available for the five-year effective rate.</li>
+</ol>
+<p><strong>RERUN_NEEDED: no</strong></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/qgallea\.github\.io\/recast-causal-ai");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><strong>RECAST</strong> by <a href="https://thecausalmindset.com">Quentin Gallea, Ph.D.</a> · Built with <a href="https://claude.ai/code">Claude Code</a> &amp; <a href="https://quarto.org">Quarto</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://github.com/qgallea/recast-causal-ai">GitHub</a> · <a href="https://thecausalmindset.com/training/claude-code-for-research">Claude Code for Research</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
