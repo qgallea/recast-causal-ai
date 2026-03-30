@@ -106,16 +106,16 @@ document.addEventListener('DOMContentLoaded', function() {
 <span class="menu-text">Papers</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link active" href="./framework.html" aria-current="page"> 
+<span class="menu-text">Framework</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./submissions.html"> 
 <span class="menu-text">Tracker</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./submit.html"> 
 <span class="menu-text">Submit</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./framework.html" aria-current="page"> 
-<span class="menu-text">Framework</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
@@ -163,6 +163,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <p>RECAST is built as a set of Claude Code slash commands and internal skills. All orchestration is done by AI agents communicating through the filesystem — no custom Python runtime is required to operate the framework.</p>
+<section id="methodological-foundations" class="level2">
+<h2 class="anchored" data-anchor-id="methodological-foundations">Methodological foundations</h2>
+<p>The RECAST pipeline is grounded in two key academic references:</p>
+<ul>
+<li><p><strong>DML methodology:</strong> <a href="https://doi.org/10.1093/ectj/utae004">Baiardi &amp; Naghi (2024)</a>, “The value added of machine learning to causal inference: evidence from revisited studies,” <em>Econometrics Journal</em>. The pipeline’s DML extension — 7 ML methods, adaptive K-fold cross-fitting, median aggregation across sample splits, B&amp;N adjusted standard errors, BLP/GATE/CLAN heterogeneity analysis — is directly based on their approach and replication code.</p></li>
+<li><p><strong>Referee process:</strong> <a href="https://doi.org/10.1257/jep.31.1.231">Berk, Harvey &amp; Hirshleifer (2017)</a>, “How to Write an Effective Referee Report and Improve the Scientific Review Process,” <em>Journal of Economic Perspectives</em>. The review loop follows their principles: contribution assessment before criticism, essential vs.&nbsp;suggested separation with scientific justification required, cost-benefit weighting, the implicit revise-and-resubmit bargain, and the synthesis referee as quality control against signal-jamming.</p></li>
+</ul>
 <div class="docs-grid">
 <section id="pipeline-architecture" class="level3 doc-card">
 <h3 class="anchored" data-anchor-id="pipeline-architecture"><a href="./framework/pipeline-diagram.html">Pipeline Architecture</a></h3>
@@ -191,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
