@@ -18,12 +18,12 @@ website:
         href: index.qmd
       - text: "Papers"
         href: papers.qmd
+      - text: "Framework"
+        href: framework.qmd
       - text: "Tracker"
         href: submissions.qmd
       - text: "Submit"
         href: submit.qmd
-      - text: "Framework"
-        href: framework.qmd
       - text: "About"
         href: about.qmd
     right:
