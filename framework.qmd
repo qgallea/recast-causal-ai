@@ -1,0 +1,41 @@
+---
+title: "Framework Documentation"
+page-layout: full
+toc: false
+---
+
+RECAST is built as a set of Claude Code slash commands and internal skills. All orchestration is done by AI agents communicating through the filesystem — no custom Python runtime is required to operate the framework.
+
+::: {.docs-grid}
+
+::: {.doc-card}
+### [Pipeline Architecture](framework/pipeline-diagram.qmd)
+Visual diagram of the full pipeline — from paper ingestion to published report, including both DML and Causal Forest paths.
+:::
+
+::: {.doc-card}
+### [Quick Start](framework/quickstart.qmd)
+Install, scaffold a project, add your files, and launch the pipeline in four steps.
+:::
+
+::: {.doc-card}
+### [Pipeline Stages](framework/pipeline.qmd)
+Reference for each of the six analysis notebooks, the Advisor Gate, the Review Loop, and the Final Referee.
+:::
+
+::: {.doc-card}
+### [Slash Commands](framework/commands.qmd)
+Usage and rules for `/recast`, `/recast-cf`, `/init`, `/stage`, `/review`, `/final`, and `/publish`.
+:::
+
+::: {.doc-card}
+### [Skills Reference](framework/skills.qmd)
+Internal sub-agent skills: orchestrator, notebook runner, gate validators, referees, synthesis, and revision agent.
+:::
+
+::: {.doc-card}
+### [Project Structure](framework/paper-structure.qmd)
+The folder layout created by `/init`, immutability rules, and what to read when the pipeline finishes.
+:::
+
+:::
