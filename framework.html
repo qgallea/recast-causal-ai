@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e57afe155632aaa660b5c675715ddaef.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6cd8083c2b52a75285f27e87131d3d27.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,6 +68,14 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var banner = document.createElement('div');
+  banner.className = 'construction-banner';
+  banner.innerHTML = '&#x1F6A7; <strong>Under construction &amp; testing</strong> &mdash; This site is in active development. Results have not been independently verified. Do not cite or rely on any output without manual review.';
+  document.body.insertBefore(banner, document.body.firstChild);
+});
+</script>
 
 
 </head>
@@ -154,9 +162,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="construction-banner">
-<p>🚧 <strong>Under construction &amp; testing</strong> — This site is in active development. Results have not been independently verified. Do not cite or rely on any output without manual review.</p>
-</div><p>RECAST is built as a set of Claude Code slash commands and internal skills. All orchestration is done by AI agents communicating through the filesystem — no custom Python runtime is required to operate the framework.</p>
+<p>RECAST is built as a set of Claude Code slash commands and internal skills. All orchestration is done by AI agents communicating through the filesystem — no custom Python runtime is required to operate the framework.</p>
 <div class="docs-grid">
 <section id="pipeline-architecture" class="level3 doc-card">
 <h3 class="anchored" data-anchor-id="pipeline-architecture"><a href="./framework/pipeline-diagram.html">Pipeline Architecture</a></h3>
