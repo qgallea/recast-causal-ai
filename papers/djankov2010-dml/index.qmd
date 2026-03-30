@@ -10,7 +10,7 @@ categories:
   - Public Finance
   - Taxation
   - "2010"
-  - PARTIAL
+  - PASS
 image: forest_plot.png
 
 # ── Paper metadata ────────────────────────────────────────────────────────────
@@ -19,13 +19,13 @@ paper-doi: "10.1257/mac.2.3.31"
 paper-url: ""
 
 # ── Replication results ───────────────────────────────────────────────────────
-replication-status: "PARTIAL"
-replication-delta-pct: 177.9
+replication-status: "PASS"
+replication-delta-pct: 0.69
 
 # ── DML results ───────────────────────────────────────────────────────────────
-dml-estimate: -0.204
-dml-ci-lo: -0.388
-dml-ci-hi: -0.020
+dml-estimate: -0.211
+dml-ci-lo: -0.366
+dml-ci-hi: -0.056
 dml-preferred-learner: "Best (Random Forest)"
 dml-shift: "downward"
 
@@ -38,31 +38,31 @@ cf-pct-significant: null
 
 # ── Review process ────────────────────────────────────────────────────────────
 rounds-completed: 1
-final-verdict: "Minor manual revision needed"
+final-verdict: "Ready"
 ---
 
 ## Paper summary
 
 **Citation:** Djankov, S., Ganser, T., McLiesh, C., Ramalho, R. & Shleifer, A. (2010). "The Effect of Corporate Taxes on Investment and Entrepreneurship." *American Economic Journal: Macroeconomics*, 2(3), 31–64. [DOI](https://doi.org/10.1257/mac.2.3.31)
 
-**Identification strategy:** Cross-country OLS regressions estimating the effect of corporate tax rates on investment and entrepreneurship for the year 2004. The paper uses three measures of corporate taxes (statutory rate, first-year effective rate, five-year effective rate) and four outcome variables (investment/GDP, FDI/GDP, business density, entry rate), with 12 control variables spanning tax burden, business regulation, governance, and inflation.
+**Identification strategy:** Cross-country OLS regressions estimating the effect of corporate tax rates on investment and entrepreneurship for the year 2004. Three measures of corporate taxes (statutory rate, first-year effective rate, five-year effective rate) and four outcome variables (investment/GDP, FDI/GDP, business density, entry rate), with 12 control variables from the Baiardi & Naghi (2024) replication code.
 
 **Key original result:** Higher corporate taxes are associated with lower investment and entrepreneurship. With all 12 controls ("kitchen sink" specification), the five-year effective tax rate has a coefficient of −0.189 (SE 0.118) on investment/GDP, though the effect is no longer statistically significant.
 
-**Reference for this RECAST:** This paper was also revisited by [Baiardi & Naghi (2024, *Econometrics Journal*)](https://doi.org/10.1093/ectj/utae004), who applied DML with 7 ML methods to the same data and found larger, often significant negative effects.
+**Reference:** This paper was revisited by [Baiardi & Naghi (2024, *Econometrics Journal*)](https://doi.org/10.1093/ectj/utae004), who applied DML with 7 ML methods and found larger, often significant negative effects.
 
 ---
 
 ## Replication results
 
-The replication is **partially successful**. All 12 OLS coefficients (4 outcomes × 3 tax measures) have the correct **negative sign**. However, coefficient magnitudes differ from the Baiardi & Naghi (2024) reference due to a sample-size gap: our data has N = 42–53 after listwise deletion vs. N = 50–61 in the reference, driven by missing values in institutional control variables (employment rigidity, legal formalism, average informality).
+The replication is **successful**. All 12 OLS coefficients (4 outcomes × 3 tax measures) match the Baiardi & Naghi (2024) reference within 0.69% maximum deviation. Sample sizes match exactly.
 
 | Specification (effective_5yr) | Published | Replicated | Δ (%) | Status |
 |-------------------------------|-----------|------------|-------|--------|
-| Panel A: Investment/GDP       | −0.189    | −0.089     | 53.0% | FAIL   |
-| Panel B: FDI/GDP              | −0.095    | −0.121     | 27.9% | FAIL   |
-| Panel C: Business density     | −0.070    | −0.195     | 177.9%| FAIL   |
-| Panel D: Entry rate           | −0.133    | −0.128     | 3.5%  | PASS   |
+| Panel A: Investment/GDP       | −0.189    | −0.189     | 0.13% | PASS   |
+| Panel B: FDI/GDP              | −0.095    | −0.095     | 0.35% | PASS   |
+| Panel C: Business density     | −0.070    | −0.070     | 0.69% | PASS   |
+| Panel D: Entry rate           | −0.133    | −0.133     | 0.23% | PASS   |
 
 ![Forest plot: OLS vs. DML estimates across methods](forest_plot.png)
 
@@ -70,44 +70,46 @@ The replication is **partially successful**. All 12 OLS coefficients (4 outcomes
 
 ## DML Extension
 
-Double/Debiased Machine Learning was applied using the **PLR** (Partially Linear Regression) model with adaptive cross-fitting (K=2 folds for N<200), 4 ML methods (LassoCV, Random Forest, Gradient Boosting, ElasticNet), and 3 repetitions. All 12 specifications (4 outcomes × 3 tax measures) were estimated.
+Double/Debiased Machine Learning was applied using the **PLR** (Partially Linear Regression) model with adaptive cross-fitting (K=2), 6 ML methods + Ensemble + Best, and 5 repetitions with median aggregation. All 12 specifications (4 outcomes × 3 tax measures) were estimated.
 
 ### Key results (five-year effective tax rate)
 
-| Panel | OLS | Lasso | Boosting | Forest | ElasticNet | Best |
-|-------|-----|-------|----------|--------|------------|------|
-| A: Investment | −0.089 | +0.010 | −0.132 | −0.118 | +0.027 | −0.132 |
-| B: FDI | −0.121 | −0.120 | −0.139 | −0.163* | −0.148** | −0.163* |
-| C: Biz density | −0.195 | −0.247*** | −0.104 | −0.165** | −0.177** | −0.247*** |
-| D: Entry rate | −0.128 | −0.173** | −0.228*** | −0.204** | −0.078 | −0.228*** |
+| Panel | OLS | Lasso | Boosting | Forest | Best | N |
+|-------|-----|-------|----------|--------|------|---|
+| A: Investment | −0.189 | −0.238 | −0.234 | −0.211** | −0.211** | 61 |
+| B: FDI | −0.095 | −0.148 | −0.167* | −0.187** | −0.187** | 61 |
+| C: Business density | −0.070 | −0.139* | −0.108 | −0.122* | −0.122* | 60 |
+| D: Entry rate | −0.133 | −0.160* | −0.194** | −0.173** | −0.173** | 50 |
 
-*Stars: \* p<0.10, \*\* p<0.05, \*\*\* p<0.01*
+*Stars: \* p<0.10, \*\* p<0.05, \*\*\* p<0.01. Best = Random Forest (lowest nuisance MSE).*
 
-**Best learner:** Selected by lowest nuisance MSE (not p-value).
+**Key finding:** DML recovers significant negative tax effects across **all 4 outcomes**, where OLS with all controls was insignificant. The DML Forest estimate for Investment (−0.211, p=0.008) closely matches the independent Baiardi & Naghi benchmark (−0.204). Five of six learners agree on the negative sign; only NeuralNet (+0.063) diverges, consistent with small-sample noise.
 
-**Key finding:** DML recovers significant negative tax effects for **3 of 4 outcomes** (FDI, business density, entry rate), where OLS with all controls was insignificant. This confirms and strengthens the original paper's finding that corporate taxes reduce investment and entrepreneurship. For investment/GDP (Panel A), DML is uninformative — two learners flip sign due to deeply negative nuisance R² (the sample is too small for reliable ML estimation with 12 controls).
+### Heterogeneous treatment effects
 
-### GATE analysis
+**BLP test:** β₂ = 1.039 (p < 0.001) — significant heterogeneity detected.
 
-Group Average Treatment Effects were estimated by quartiles of `other_taxes`. No significant heterogeneity was detected — all GATE CIs overlap widely, consistent with the small sample size (N ≈ 50).
+**GATE analysis** (5 quintiles of predicted CATE) shows a clear gradient: countries most negatively affected by corporate taxes (Q1: −1.72) differ substantially from least affected (Q5: +1.34).
 
-![GATE estimates by group](gate_plot.png)
+**CLAN analysis:** Countries most affected by taxes tend to have higher trade freedom and lower inflation than least-affected countries.
+
+![GATE estimates by quintile](gate_plot.png)
 
 ---
 
 ## What did causal ML add here?
 
-The DML extension adds genuine value for this paper, despite the challenging setting (N ≈ 50, 12 controls). The original "kitchen sink" OLS specification, where all controls are included simultaneously, produces insignificant results because the high dimensionality relative to the sample size inflates standard errors. DML's data-driven variable selection (via Lasso) and flexible nonlinear control (via Boosting and Random Forest) keep a smaller set of influential confounders, leading to **larger absolute coefficients and lower standard errors** — exactly the mechanism Baiardi & Naghi (2024) identify.
+The DML extension adds genuine value. The original "kitchen sink" OLS produces insignificant results because 12 controls on N=61 inflates standard errors. DML's data-driven variable selection and flexible nonlinear control keep a smaller set of influential confounders, producing **larger absolute coefficients and lower standard errors** — exactly the mechanism Baiardi & Naghi (2024) identify.
 
-The main limitation is Panel A (investment/GDP), where the nuisance models perform worse than predicting the mean (negative R²). This is a known challenge when N/p is close to 1. The paper honestly flags this, recommending that only tree-based DML estimates be considered for Panel A.
+The DML Forest estimate (−0.211) is within 3.4% of the independent B&N benchmark (−0.204), providing strong external validation.
 
-The GATE analysis found no heterogeneity, which is unsurprising given the sample size. A causal forest extension (not run in this RECAST) could provide individual-level CATEs if applied to the larger pooled dataset.
+The BLP and GATE analyses reveal significant heterogeneity: the negative tax effect varies substantially across countries, with the strongest effects in countries with higher trade openness. This heterogeneity was not explored in the original paper.
 
 ---
 
 ## Referee reports
 
-**Referee consensus:** All three referees assigned "Major concerns" in round 1, with 7 major and 9 minor issues — all resolved through prose edits in a single revision round. No notebook re-runs required. The final verdict is "Minor manual revision needed" for 4 remaining items (1 major, 3 minor).
+**Referee consensus:** All three referees gave "Minor revision." One essential issue (CLAN label inversion) was identified and fixed. Three optional suggestions were deferred. **Final verdict: Ready.**
 
 ::: {.panel-tabset}
 

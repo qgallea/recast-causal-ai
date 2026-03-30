@@ -1,36 +1,71 @@
 ## Referee 2 Report: DML Methods & Causal Forest
 **Round:** 1
-**Overall verdict:** Major concerns
+**Overall verdict:** Minor revision
 
-### Blocking issues
-- None
+---
 
-### Major issues
+### Methodological contribution
 
-1. **Preferred learner selection is questionable and produces a sign change (Checks 4, 6).** The pipeline selects LassoCV as the preferred learner because Random Forest's average R^2(outcome) = 0.0159 falls below the 0.1 threshold. However, LassoCV has *worse* average nuisance R^2 across specifications: R^2(outcome) = -0.2097, R^2(treatment) = -0.1647. The preferred learner is thus selected by a rule that paradoxically picks the learner with poorer nuisance fit. For the primary specification (Investment ~ effective_5yr), LassoCV yields a sign-changed coefficient of +0.010 (p = 0.94), while Random Forest yields -0.118 (p = 0.16) and Gradient Boosting yields -0.132 (p = 0.22) -- both preserving the expected negative sign. The paper correctly notes this issue in the diagnostics discussion, but the `preferred_coef` field in `dml_results.json` reports +0.010, which is misleading as the headline DML finding for Panel A. **Recommendation:** either override the selection rule in this context (where all R^2 values are near zero or negative) and designate Random Forest or Gradient Boosting as the preferred learner for reporting, or explicitly report results from the best-performing nuisance learner per specification rather than a single global preferred learner.
+The DML extension is well-suited to Djankov et al. (2010). The original setting -- cross-country OLS with a continuous treatment (corporate tax rates) and 12 controls in a sample of N=50--61 -- is exactly the regime where DML offers value: p/N is large (~0.2), OLS with many controls is inefficient, and the PLR model cleanly nests the original specification. Comparing six ML learners across all 12 specifications provides genuine evidence about the robustness of the original result and aligns well with the Baiardi & Naghi (2024) benchmark. The systematic finding that DML recovers larger and more significant negative coefficients than OLS, particularly for Investment and FDI, is the central value added.
 
-2. **Negative nuisance R^2 across the board raises validity concerns (Checks 4, 6, 9).** Average nuisance R^2(outcome) ranges from -0.2097 (LassoCV) to +0.0159 (RandomForest); R^2(treatment) ranges from -0.1647 (LassoCV) to -0.0157 (RandomForest). Negative out-of-sample R^2 means the ML nuisance models predict *worse* than the sample mean. While the paper correctly attributes this to small N (~50) with 12 controls, the DML theoretical guarantees require nuisance estimates to converge at a sufficient rate. When nuisance R^2 is negative, the residualized outcome and treatment are essentially the raw variables plus noise, and the DML estimator degenerates toward OLS or worse. The paper should state more explicitly that the DML standard errors may not be reliable under these conditions, rather than simply interpreting significance at face value.
+---
 
-3. **K=5 cross-fitting is borderline inadequate for N=42 (Check 2).** For Panel D (entry rate), N=42 with K=5 yields approximately 8-9 observations per fold. The rule of thumb K * min_fold_size > 30 is only marginally satisfied (5 * 8 = 40 > 30), but the effective sample for training each nuisance model is only ~34 observations with 12 features. This contributes to the poor nuisance model performance. Consider reporting results with K=3 as a robustness check for the entry rate panel, which would give ~28 training observations per fold -- still small, but the larger training sets may improve nuisance fits.
+### DML checklist
 
-### Minor issues
+| # | Item | Verdict | Notes |
+|---|------|---------|-------|
+| 1 | Model class (PLR) correct | **PASS** | PLR is correct for continuous treatment with no instruments. |
+| 2 | K-fold adaptive to N | **PASS** | K=2 for N<200. All specifications use N=50--61, so K=2 is appropriate. |
+| 3 | n_rep >= 20, median aggregation, adjusted SE | **SUGGESTION** (S1) | n_rep=5 with median aggregation and B&N adjusted SE formula. See S1 below. |
+| 4 | "Best" selected by lowest nuisance MSE | **PASS** | Code confirms: `best_method = min(methods_ok, key=lambda m: learner_nuisance_mse[m]['mse_outcome'])`. Selection is by outcome nuisance MSE, not p-value. |
+| 5 | >= 5 method classes present | **PASS** | 6 learners (Lasso, ElasticNet, DecisionTree, Boosting, Forest, NeuralNet) + Ensemble + Best = 8 columns. |
+| 6 | Nuisance R^2 reported and honestly interpreted | **PASS** | Paper Table 4 discusses negative average R^2 and reports Forest best R^2_Y=0.051, R^2_D=0.090. Diagnostics section acknowledges this is a small-sample limitation. |
+| 7 | Score function appropriate | **PASS** | Default DoubleML PLR score (partialling out) is used, which is correct. |
+| 8 | CIs from DML SEs (not naive OLS post-residualisation) | **PASS** | CIs are computed as `median_coef +/- 1.96 * SE_adj` using the B&N adjusted formula. |
+| 9 | Lasso coefficient diagnostics reported | **SUGGESTION** (S2) | `lasso_diagnostics: null` for all specifications in the JSON. The `extract_lasso_diagnostics` function exists in the code but appears to have failed silently (likely a key-format issue across DoubleML versions). |
+| 10 | BLP heterogeneity test reported before GATE | **PASS** | BLP beta_2 = 1.039, p < 0.001. Correctly reported before GATE analysis. |
+| 11 | GATE groups based on predicted CATE quintiles | **PASS** | Code uses `pd.qcut(S_proxy, q=5)` on predicted CATE from the Best learner. |
+| 12 | Jointly valid CIs for GATE | **PASS** | Code confirms `gate_obj.confint(level=0.95, joint=True)`. |
+| 13 | CLAN included | **PASS** | CLAN is reported in the paper (Table 5) and JSON (12 control variables compared). See E1 below for a labeling concern. |
 
-1. **N_rep=3 is the minimum acceptable (Check 3).** With only 3 repetitions, the cross-fitting variance is averaged over very few random splits. The coefficient estimates may be sensitive to the particular partition. This is acceptable for a first pass but the paper should note this limitation. For this sample size, N_rep=5 or 10 would give more stable estimates at minimal computational cost.
+---
 
-2. **GATE grouping variable lacks strong theoretical motivation (Check 10).** The GATE analysis groups by "other_taxes" (non-corporate tax burden). While this has some economic plausibility -- countries with higher overall tax burdens may respond differently to corporate tax changes -- the choice appears to be the first control variable in the list rather than a variable chosen on theoretical grounds. The paper should briefly justify why heterogeneity along this dimension is expected, or acknowledge that the choice is exploratory.
+### Essential issues
 
-3. **GATE confidence intervals are correctly computed as jointly valid (Check 11).** The code uses `gate.confint(level=0.95, joint=True)`, which is the correct approach. No issue here.
+**E1. CLAN labeling inversion: "most affected" and "least affected" groups appear swapped.**
 
-4. **CATE summary statistics may be misleading (Check 12).** The paper reports CATE mean = -0.444 with SD = 1.580 and range [-3.252, 1.432]. These are B-spline basis coefficients from the DoubleML CATE method, not individual-level treatment effects. The interpretation in the paper ("substantial imprecision at the individual level") is somewhat ambiguous. The paper should clarify that CATE estimates from this method represent smoothed conditional effects along the grouping variable, not unit-level heterogeneity estimates. With only ~53 observations and a spline basis, the CATE variation largely reflects estimation noise rather than genuine heterogeneity, consistent with the null GATE finding.
+The CLAN code defines `top_q = S_proxy >= np.percentile(S_proxy, 80)` -- that is, the top quintile of the predicted CATE distribution. Since the overall treatment effect is negative (taxes reduce investment), a *high* predicted CATE means the country is *least* negatively affected (near-zero or positive CATE), while a *low* predicted CATE means the country is *most* negatively affected. However, the code labels the top-CATE group as "Most" (mapped to `mean_most_affected` in the JSON) and the bottom-CATE group as "Least" (mapped to `mean_least_affected`).
 
-5. **Best learner selection per specification uses lowest p-value rather than best nuisance fit (Check 4).** In Cell 4, the "best learner" for each specification is selected by minimum p-value (`min(valid_learners, key=lambda x: x[1]['pval'])`). This is problematic because it rewards the learner that happens to produce the most significant result, rather than the learner whose nuisance models provide the best first-stage fit. Selecting on significance introduces a selection bias toward overstatement. The best learner should be selected based on nuisance R^2 or cross-validated loss, not inferential output.
+This means the paper's CLAN discussion has the group labels inverted: when it states "the most affected countries have lower trade freedom (mean 6.72) than the least affected (mean 7.52)," it is actually describing the *least* harmed countries (Q5, positive CATE) as "most affected" and the *most* harmed countries (Q1, negative CATE) as "least affected."
+
+**Scientific justification:** This does not change any computed values (the t-test and means are correct), but it inverts the substantive interpretation of which country characteristics predict larger or smaller treatment effects. The CLAN paragraph in the paper draws a causal-intuition narrative ("countries with less open economies suffer more from corporate tax increases") that is backwards relative to the actual GATE gradient. Without correction, readers will draw the wrong policy conclusion from the CLAN table.
+
+**Fix:** Swap the labels so that `bot_q` (lowest predicted CATE = most negative effect = most harmed) is "most affected" and `top_q` (highest predicted CATE = least negative effect) is "least affected." Update the CLAN discussion in the paper accordingly.
+
+---
+
+### Suggestions
+
+**S1. Consider increasing n_rep from 5 to at least 20.**
+
+The current n_rep=5 is below the standard recommendation of n_rep >= 20 (Chernozhukov et al., 2018). The B&N adjusted SE formula is designed to account for cross-split variation, but with only 5 repetitions the median estimate may have non-trivial sampling noise. The cross-fit stability diagnostic (SD across reps = 0.016, ratio = 0.21 for Forest) is reassuring for the primary specification, so this is not blocking. However, increasing to n_rep=20 would better justify the asymptotic validity of the adjusted SE. This is a suggestion because the current results are stable and match the B&N benchmark, so there is no evidence of bias from low n_rep.
+
+**S2. Report Lasso variable selection diagnostics.**
+
+The `lasso_diagnostics` field is `null` for every specification, meaning Lasso/ElasticNet coefficient counts and top selected variables are not reported. The `extract_lasso_diagnostics` function exists but apparently fails due to a key-format mismatch across DoubleML versions. Reporting which controls Lasso retains (and which it zeros out) would help readers understand why DML recovers larger coefficients than OLS -- the standard interpretation is that OLS is inefficient because it tries to estimate all 12 control coefficients, while Lasso shrinks irrelevant ones. This is informative but not essential.
+
+**S3. Discuss the "Best" learner selection criterion more transparently.**
+
+The "Best" learner is selected by lowest *outcome* nuisance MSE (`mse_outcome`), but the best method for the treatment nuisance can differ. For the primary specification (Investment ~ 5yr effective rate), Best selects Forest (R^2_Y = 0.051) for the outcome equation but the JSON records `best_treatment_method: ElasticNet`. The paper and diagnostics table do not explain this asymmetry. A brief note clarifying that "Best" refers to the learner with the lowest outcome MSE (and why this is the standard choice) would improve transparency.
+
+**S4. Note the DecisionTree anomaly in some specifications.**
+
+In Panel C (Business density ~ statutory), the Best learner is DecisionTree with R^2_Y = 0.115 and coefficient -0.037 (p = 0.70). In the same panel, Forest yields -0.089 (p = 0.11) and Lasso yields -0.115 (p = 0.04). DecisionTree is selected as "Best" on MSE grounds, but its coefficient is the smallest and least significant. This is not wrong -- MSE-based selection is methodologically correct -- but it highlights that "Best" does not always mean "most significant" or "most informative." A sentence acknowledging this would prevent misunderstanding.
+
+---
 
 ### Comments to the authors
 
-The choice of DoubleMLPLR is correct for this OLS design with a continuous treatment and no instruments (Check 1). The score function ("partialling out") is appropriate and the confidence intervals are derived from DML standard errors, not naive post-residualization OLS (Check 8). The learner grid spans linear (Lasso, Elastic Net), tree-based (Random Forest), and ensemble (Gradient Boosting) methods, which is adequately diverse (Check 5). No evidence of overfitting is present -- to the contrary, the problem is underfitting due to small N (Check 9).
+The DML implementation is methodologically sound. The use of PLR, K=2 folds for N < 200, median aggregation with B&N adjusted SEs, and "Best" selection by nuisance MSE all follow the Baiardi & Naghi (2024) protocol. The close match between the pipeline's Forest estimate (-0.211, SE=0.079) and the B&N benchmark (-0.204, SE=0.094) for the primary specification is striking and lends credibility to the entire analysis. The finding that 5/6 learners agree on a negative sign, with only the neural network diverging (as expected in N=61), is exactly the kind of robustness evidence that DML is designed to provide. The nuisance model quality issue (average R^2 < 0) is an inherent limitation of ML in small cross-country samples and is honestly discussed; the Forest's positive R^2 (0.051 for outcome, 0.090 for treatment) is modest but sufficient for valid DML inference, as confirmed by the low cross-fit ratio (0.21).
 
-The fundamental challenge this paper faces is that DML is being applied to a setting where it has limited value: N = 42-53 with 12 controls. DML's theoretical advantage -- flexible estimation of nuisance functions -- requires enough data for the ML models to learn nonlinear patterns better than simple linear models. Here, the nuisance models cannot outperform a constant prediction (R^2 < 0), so the DML "debiasing" step is adding noise rather than removing bias. The results for Panels B-D (FDI, business density, entry rate) are nevertheless encouraging because all four learners agree on the negative sign and many achieve significance, suggesting the tax effect is robust. Panel A (investment/GDP) is genuinely uninformative under DML -- the sign instability across learners reflects the fact that the nuisance residuals are essentially random.
-
-The paper handles the diagnostics discussion well, correctly attributing the three diagnostic failures to sample-size constraints. However, it should be more cautious about claiming DML "strengthens" the evidence when the nuisance models are not learning the conditional expectation functions. In this regime, DML is closer to a sample-splitting OLS than a genuine semiparametric estimator. The fact that some DML estimates are more significant than OLS may partly reflect the variance reduction from averaging over 3 repetitions, rather than genuine bias correction. I recommend adding a sentence acknowledging this limitation in the DoubleML Extension section.
-
-Causal forest checks (13-21) are skipped because `causal_forest_results.json` does not exist.
+The heterogeneous treatment effect analysis is well-executed. The BLP test correctly rejects constant effects (beta_2 = 1.04, p < 0.001), and the GATE gradient from -1.72 (Q1) to +1.34 (Q5) with jointly valid CIs is a valuable finding that goes beyond the original paper. The one essential issue (E1) concerns the CLAN labeling, which should be corrected to avoid misleading substantive interpretation. The re-fitting with n_rep=1 for GATE compatibility is a reasonable workaround for the DoubleML API constraint.
