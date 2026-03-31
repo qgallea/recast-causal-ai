@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>RECASTed Papers – RECAST</title>
+<title>ref2 – RECAST</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +23,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6cd8083c2b52a75285f27e87131d3d27.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-6cd8083c2b52a75285f27e87131d3d27.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +68,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-papers-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-description','listing-categories','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
-      
-      searchColumns: ["listing-title","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-papers-listing'] = new List('listing-papers-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var banner = document.createElement('div');
@@ -147,7 +116,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">RECAST</span>
     </a>
   </div>
@@ -158,27 +127,27 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./papers.html" aria-current="page"> 
+    <a class="nav-link" href="../../../papers.html"> 
 <span class="menu-text">Papers</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./framework.html"> 
+    <a class="nav-link" href="../../../framework.html"> 
 <span class="menu-text">Framework</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./submissions.html"> 
+    <a class="nav-link" href="../../../submissions.html"> 
 <span class="menu-text">Tracker</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./submit.html"> 
+    <a class="nav-link" href="../../../submit.html"> 
 <span class="menu-text">Submit</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -196,251 +165,144 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="MjAxMA==">2010 <span class="quarto-category-count">(2)</span></div><div class="category" data-category="MjAxMg==">2012 <span class="quarto-category-count">(2)</span></div><div class="category" data-category="MjAxMw==">2013 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2F1c2FsJTIwRm9yZXN0">Causal Forest <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RGV2ZWxvcG1lbnQ=">Development <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RG91YmxlTUw=">DoubleML <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R3Jvd3Ro">Growth <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGVhbHRo">Health <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SVY=">IV <span class="quarto-category-count">(3)</span></div><div class="category" data-category="T0xT">OLS <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UEFTUw==">PASS <span class="quarto-category-count">(5)</span></div><div class="category" data-category="UHVibGljJTIwRmluYW5jZQ==">Public Finance <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGF4YXRpb24=">Taxation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VHJhZGU=">Trade <span class="quarto-category-count">(1)</span></div></div></div>
-<!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">RECASTed Papers</h1>
-<p class="subtitle lead">Replication and DoubleML extension results</p>
-</div>
-
-
-
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>Each paper below has been <strong>RECASTed</strong> — replicated, extended with DoubleML, and reviewed by three isolated AI referees. Filter by identification strategy, topic, or replication status using the controls below.</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-papers-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-    <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-    <select id="listing-papers-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-papers-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-      <option value="" disabled="" selected="" hidden="">Order By</option>
-      <option value="index" data-direction="asc">Default</option>
-      <option value="listing-date-sort" data-direction="asc">
-        Year - Oldest
-      </option>
-      <option value="listing-date-sort" data-direction="desc">
-        Year - Newest
-      </option>
-      <option value="listing-title" data-direction="asc">
-        Title
-      </option>
-    </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#referee-2-report-dml-methods-causal-forest" id="toc-referee-2-report-dml-methods-causal-forest" class="nav-link active" data-scroll-target="#referee-2-report-dml-methods-causal-forest">Referee 2 Report: DML Methods &amp; Causal Forest</a></li>
+  </ul>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
-</div>
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="SVYlMkNEZXZlbG9wbWVudCUyQzIwMTMlMkNQQVNTJTJDQ2F1c2FsJTIwRm9yZXN0" data-listing-date-sort="1356998400000" data-listing-file-modified-sort="1774111558682" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1438">
-<a href="./papers/ashraf2013-cf/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/ashraf2013-cf/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Out of Africa: Genetic Diversity and Economic Development (Causal Forest)
-</h5>
-<div class="listing-categories">
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
-<div class="listing-category" onclick="window.quartoListingCategory('SVY='); return false;">IV</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('RGV2ZWxvcG1lbnQ='); return false;">Development</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMw=='); return false;">2013</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
+<section id="referee-2-report-dml-methods-causal-forest" class="level2">
+<h2 class="anchored" data-anchor-id="referee-2-report-dml-methods-causal-forest">Referee 2 Report: DML Methods &amp; Causal Forest</h2>
+<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Minor revision</p>
+<section id="methodological-contribution" class="level3">
+<h3 class="anchored" data-anchor-id="methodological-contribution">Methodological contribution</h3>
+<p>The DML extension is well-suited to this setting. Nunn and Trefler (2010) use OLS with 17 controls in a sample of only 63 countries (<span class="math inline">\(p/N \approx 0.27\)</span>), making regularisation bias a first-order concern. PLR is the correct model class for continuous treatment with selection-on-observables identification. The comparison of 7 ML methods (5 base + Ensemble + Best) provides genuine evidence about whether the positive tariff–growth relationship survives flexible nonlinear control adjustment — and it does, directionally, though at roughly half the OLS magnitude. The close agreement with Baiardi and Naghi (2024) benchmarks (within 0.001–0.002 across all three treatments) provides strong external validation.</p>
+</section>
+<section id="essential-issues" class="level3">
+<h3 class="anchored" data-anchor-id="essential-issues">Essential issues</h3>
+<ol type="1">
+<li><p><strong>n_rep = 5 is below the recommended minimum of 20 (Checklist item 3).</strong> The code explicitly overrides the config value (<code>n_rep = 5</code>, line 155: “Override n_rep to 5 for speed”) and the SE formula correctly applies the B&amp;N median-aggregation adjustment. However, with only 5 repetitions the median coefficient and the variance term <span class="math inline">\((\hat\theta_k - \tilde\theta)^2\)</span> in the adjusted SE are estimated from very few draws. This matters because <span class="math inline">\(N = 63\)</span> with <span class="math inline">\(K = 2\)</span> folds means each fold has $$31 observations, so cross-fitting variability can be substantial. <strong>Scientific justification:</strong> With 5 reps, the inter-rep variance component in the adjusted SE is estimated with effectively 4 degrees of freedom. A single aberrant fold split could shift the median coefficient or inflate/deflate the adjusted SE by 20–30%. Since all three primary specifications have CIs that just barely include or exclude zero (p-values in the 0.03–0.20 range), the marginal significance conclusions are sensitive to cross-fitting noise. <strong>Recommended fix:</strong> Re-run with n_rep = 20 (the config default). This is computationally cheap for <span class="math inline">\(N = 63\)</span> and 5 learners. If the point estimates and p-value ordering remain unchanged, the current conclusions are confirmed; if they shift, the paper must update its significance statements.</p></li>
+<li><p><strong>“Best” learner copies the Forest result wholesale rather than combining the best-outcome and best-treatment learners (Checklist item 4).</strong> The code (line 520) copies all results from <code>best_outcome_method</code> (Forest for Panel A), including its coefficient and SE. But the <code>best_treatment_method</code> is Lasso for Panel A. In the Baiardi and Naghi (2024) methodology, “Best” should re-fit the PLR using the best outcome learner (Forest) for <code>ml_l</code> and the best treatment learner (Lasso) for <code>ml_m</code>. Instead, the current “Best” is simply the Forest result (Forest for both nuisance equations). <strong>Scientific justification:</strong> The treatment nuisance <span class="math inline">\(R^2\)</span> for Forest is 0.286 vs.&nbsp;0.312 for Lasso (Panel A). Using the wrong treatment learner means the first-stage residualisation of <span class="math inline">\(D\)</span> is suboptimal, which inflates the DML standard error and may attenuate the point estimate. The paper explicitly states “Best learner (Forest for outcome, Lasso for treatment)” but the reported coefficient (0.018) and SE (0.0106) are identical to the Forest row, confirming that the best-treatment learner was not actually used. <strong>Recommended fix:</strong> Re-fit the Best specification using Forest for <code>ml_l</code> and Lasso for <code>ml_m</code>. This requires one additional <code>DoubleMLPLR</code> call per specification.</p></li>
+</ol>
+</section>
+<section id="suggestions" class="level3">
+<h3 class="anchored" data-anchor-id="suggestions">Suggestions</h3>
+<ol type="1">
+<li><p><strong>Ensemble SE is computed as a weighted average of individual SEs (Checklist item 8).</strong> The code (lines 500–501) computes <code>ensemble_se = sum(weights * se)</code>. This is not a valid standard error — it does not account for covariance between learner estimates. The correct approach is either (a) to use the delta method with the stacking covariance matrix, or (b) to report the ensemble as a point estimate only and note that no valid SE is available. The current CIs are therefore unreliable for the Ensemble column, though since the paper’s main conclusions rest on the “Best” learner this is not blocking.</p></li>
+<li><p><strong>Low nuisance <span class="math inline">\(R^2\)</span> merits a more structured discussion (Checklist item 6).</strong> The outcome <span class="math inline">\(R^2\)</span> ranges from <span class="math inline">\(-38.8\)</span> (NeuralNet, catastrophic) to <span class="math inline">\(0.19\)</span> (Boosting, Panel B). The paper correctly notes that low <span class="math inline">\(R^2\)</span> inflates SEs without biasing point estimates via Neyman orthogonality, and correctly identifies external validation via B&amp;N. This is adequate but could be strengthened by reporting a table of nuisance <span class="math inline">\(R^2\)</span> values for all learners across all three panels, making transparent which learners achieve positive <span class="math inline">\(R^2\)</span> and which do not.</p></li>
+<li><p><strong>NeuralNet should be formally excluded or downweighted in interpretation (Checklist item 6).</strong> The NeuralNet outcome <span class="math inline">\(R^2\)</span> is catastrophic (<span class="math inline">\(-38.8\)</span> to <span class="math inline">\(-44.3\)</span>) across all three panels, meaning its nuisance predictions are worse than a constant. The paper describes this as “unreliable” but still includes NeuralNet in the forest plot and the main results table. A cleaner approach is to report it in a footnote or appendix and note that the Ensemble correctly downweights it (weight 0.5–0.6%).</p></li>
+<li><p><strong>BLP implementation uses manual OLS rather than the DoubleML API (Checklist items 10–11).</strong> The code (lines 750–752) constructs the BLP regression manually via <code>sm.OLS(Y_res, X_blp)</code> with HC1 standard errors, rather than using <code>obj_hte.blp()</code>. The manual approach is methodologically valid if the residuals <span class="math inline">\(Y_{res}\)</span> and <span class="math inline">\(D_{res}\)</span> are correctly extracted from the DML object, which appears to be the case (lines 733–734). However, using the built-in API would reduce the risk of implementation error and ensure consistency with the GATE computation.</p></li>
+<li><p><strong>CLAN lacks statistical power and could note this more explicitly (Checklist item 13).</strong> CLAN is reported with <span class="math inline">\(N = 13\)</span> per extreme quintile and no covariate reaches significance. The paper mentions this is “expected given the small sample” but could add that with 13 observations per group, a standardised effect of <span class="math inline">\(d \approx 1.1\)</span> would be needed for 80% power, making CLAN essentially uninformative here.</p></li>
+<li><p><strong>Cross-fitting stability diagnostic is skipped (Checklist item, diagnostics_flags.json).</strong> The <code>cross_fitting_stability</code> check returns SKIP because <code>per_rep_coefs</code> are not stored in the Best learner. Storing and reporting the per-rep coefficients (trivially available from <code>obj.all_coef</code>) would allow readers to assess fold-split sensitivity, which is particularly relevant at <span class="math inline">\(N = 63\)</span>.</p></li>
+</ol>
+</section>
+<section id="dml-checklist-summary" class="level3">
+<h3 class="anchored" data-anchor-id="dml-checklist-summary">DML Checklist Summary</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 33%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Item</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Model class (PLR)</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>K-fold adaptive to N</td>
+<td>PASS (K=2 for N=63 &lt; 200)</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>n_rep &gt;= 20</td>
+<td>ESSENTIAL (n_rep=5, see issue 1)</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Best by lowest nuisance MSE</td>
+<td>ESSENTIAL (copies outcome-best wholesale, see issue 2)</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>&gt;= 5 method classes</td>
+<td>PASS (Lasso, Tree, Boosting, Forest, NNet + Ensemble + Best)</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Nuisance R2 reported honestly</td>
+<td>PASS (reported; see suggestion 2 for improvement)</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Score function appropriate</td>
+<td>PASS (default PLR score)</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>CIs from DML SEs</td>
+<td>SUGGESTION (Ensemble SE invalid; Best/individual correct)</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Lasso diagnostics reported</td>
+<td>PASS (3/17 and 5/17 non-zero for Panel A)</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>BLP reported before GATE</td>
+<td>PASS (beta2 = 1.083, p &lt; 0.001)</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>GATE on predicted CATE quintiles</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Jointly valid GATE CIs</td>
+<td>PASS (confint(joint=True) confirmed in code)</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>CLAN included</td>
+<td>PASS (reported; underpowered as expected)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="comments-to-the-authors" class="level3">
+<h3 class="anchored" data-anchor-id="comments-to-the-authors">Comments to the authors</h3>
+<p>The DML implementation is generally sound and produces results that are well-aligned with the Baiardi and Naghi (2024) benchmarks, which is the strongest possible external validation for this paper. The PLR model class is appropriate, K=2 is correct for the small sample, the B&amp;N adjusted SE formula is correctly implemented, and the GATE analysis with jointly valid CIs is properly executed via the DoubleML API. The finding that DML coefficients are roughly half the OLS values across all three treatment measures, with all well-behaved learners agreeing on a positive sign, is a genuinely informative result.</p>
+<p>The two essential issues are both fixable with modest computational effort. First, increasing n_rep from 5 to 20 will stabilise the median coefficient and the adjusted SE, which is important because the marginal significance of several specifications (p-values in the 0.05–0.20 range) could shift with different cross-fitting draws. Second, the “Best” learner should combine the best outcome learner (Forest) with the best treatment learner (Lasso) in a single PLR fit, rather than simply copying the Forest row. This discrepancy is visible in the data: the Best and Forest rows in dml_results.json are identical (coef = 0.01764, SE = 0.01058), yet the paper claims “Best” uses Forest for outcome and Lasso for treatment. Fixing this will likely produce a slightly different coefficient and potentially a tighter SE (since Lasso achieves higher treatment <span class="math inline">\(R^2\)</span> than Forest: 0.312 vs.&nbsp;0.286).</p>
+<p>Neither issue is likely to change the paper’s qualitative conclusions — the DML estimates will almost certainly remain positive, smaller than OLS, and marginally significant — but they are needed for methodological correctness.</p>
 
-<div class="listing-category" onclick="window.quartoListingCategory('Q2F1c2FsJTIwRm9yZXN0'); return false;">Causal Forest</div>
 
-</div>
-<div class="card-text listing-description delink">
-<p>IV using migratory distance as instrument for genetic diversity — Causal Forest extension</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Ashraf, Galor
-</div>
-<div class="listing-date">
-Jan 1, 2013
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="SVYlMkNIZWFsdGglMkMyMDEyJTJDUEFTUyUyQ0NhdXNhbCUyMEZvcmVzdA==" data-listing-date-sort="1325376000000" data-listing-file-modified-sort="1774107226447" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="962">
-<a href="./papers/finkelstein2012-cf/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/finkelstein2012-cf/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Oregon Health Insurance Experiment (Causal Forest)
-</h5>
-<div class="listing-categories">
+</section>
+</section>
 
-<div class="listing-category" onclick="window.quartoListingCategory('SVY='); return false;">IV</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('SGVhbHRo'); return false;">Health</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMg=='); return false;">2012</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2F1c2FsJTIwRm9yZXN0'); return false;">Causal Forest</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>IV using Oregon Medicaid lottery as instrument for insurance coverage — Causal Forest extension</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Finkelstein, Taubman, Wright, Bernstein, Gruber, Newhouse, Allen, Baicker
-</div>
-<div class="listing-date">
-Jan 1, 2012
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="SVYlMkNIZWFsdGglMkMyMDEyJTJDUEFTUyUyQ0RvdWJsZU1M" data-listing-date-sort="1325376000000" data-listing-file-modified-sort="1774105312259" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="842">
-<a href="./papers/finkelstein2012-dml/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/finkelstein2012-dml/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Oregon Health Insurance Experiment (DoubleML)
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('SVY='); return false;">IV</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('SGVhbHRo'); return false;">Health</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMg=='); return false;">2012</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RG91YmxlTUw='); return false;">DoubleML</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>IV using Oregon Medicaid lottery as instrument for insurance coverage — DoubleML PLIV extension</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Finkelstein, Taubman, Wright, Bernstein, Gruber, Newhouse, Allen, Baicker
-</div>
-<div class="listing-date">
-Jan 1, 2012
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="T0xTJTJDUHVibGljJTIwRmluYW5jZSUyQ1RheGF0aW9uJTJDMjAxMCUyQ1BBU1M=" data-listing-date-sort="1262304000000" data-listing-file-modified-sort="1774897771035" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="726">
-<a href="./papers/djankov2010-dml/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/djankov2010-dml/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The Effect of Corporate Taxes on Investment and Entrepreneurship
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('T0xT'); return false;">OLS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHVibGljJTIwRmluYW5jZQ=='); return false;">Public Finance</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGF4YXRpb24='); return false;">Taxation</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMA=='); return false;">2010</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Cross-country OLS: do higher corporate tax rates reduce investment and entrepreneurship?</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Djankov, Ganser, McLiesh, Ramalho &amp; Shleifer
-</div>
-<div class="listing-date">
-Jan 1, 2010
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="T0xTJTJDVHJhZGUlMkNHcm93dGglMkMyMDEwJTJDUEFTUw==" data-listing-date-sort="1262304000000" data-listing-file-modified-sort="1774947865692" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="714">
-<a href="./papers/nunntrefler2010-dml/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/nunntrefler2010-dml/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The Structure of Tariffs and Long-term Growth
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('T0xT'); return false;">OLS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VHJhZGU='); return false;">Trade</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('R3Jvd3Ro'); return false;">Growth</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMA=='); return false;">2010</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Cross-country OLS: do skill-biased tariffs promote long-term economic growth?</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Nunn &amp; Trefler
-</div>
-<div class="listing-date">
-Jan 1, 2010
-</div>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -854,7 +716,7 @@ Jan 1, 2010
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://github.com/qgallea/recast-causal-ai">GitHub</a> · <a href="https://thecausalmindset.com/training/claude-code-for-research">Claude Code for Research</a></p>
 </div>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>RECASTed Papers – RECAST</title>
+<title>ref1 – RECAST</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +23,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6cd8083c2b52a75285f27e87131d3d27.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-6cd8083c2b52a75285f27e87131d3d27.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,35 +69,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-papers-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-description','listing-categories','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
-      
-      searchColumns: ["listing-title","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-papers-listing'] = new List('listing-papers-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-<script>
 document.addEventListener('DOMContentLoaded', function() {
   var banner = document.createElement('div');
   banner.className = 'construction-banner';
@@ -108,35 +77,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -147,7 +87,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">RECAST</span>
     </a>
   </div>
@@ -158,27 +98,27 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./papers.html" aria-current="page"> 
+    <a class="nav-link" href="../../../papers.html"> 
 <span class="menu-text">Papers</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./framework.html"> 
+    <a class="nav-link" href="../../../framework.html"> 
 <span class="menu-text">Framework</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./submissions.html"> 
+    <a class="nav-link" href="../../../submissions.html"> 
 <span class="menu-text">Tracker</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./submit.html"> 
+    <a class="nav-link" href="../../../submit.html"> 
 <span class="menu-text">Submit</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -196,251 +136,56 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="MjAxMA==">2010 <span class="quarto-category-count">(2)</span></div><div class="category" data-category="MjAxMg==">2012 <span class="quarto-category-count">(2)</span></div><div class="category" data-category="MjAxMw==">2013 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2F1c2FsJTIwRm9yZXN0">Causal Forest <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RGV2ZWxvcG1lbnQ=">Development <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RG91YmxlTUw=">DoubleML <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R3Jvd3Ro">Growth <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGVhbHRo">Health <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SVY=">IV <span class="quarto-category-count">(3)</span></div><div class="category" data-category="T0xT">OLS <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UEFTUw==">PASS <span class="quarto-category-count">(5)</span></div><div class="category" data-category="UHVibGljJTIwRmluYW5jZQ==">Public Finance <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGF4YXRpb24=">Taxation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VHJhZGU=">Trade <span class="quarto-category-count">(1)</span></div></div></div>
-<!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">RECASTed Papers</h1>
-<p class="subtitle lead">Replication and DoubleML extension results</p>
-</div>
-
-
-
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>Each paper below has been <strong>RECASTed</strong> — replicated, extended with DoubleML, and reviewed by three isolated AI referees. Filter by identification strategy, topic, or replication status using the controls below.</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-papers-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-    <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-    <select id="listing-papers-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-papers-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-      <option value="" disabled="" selected="" hidden="">Order By</option>
-      <option value="index" data-direction="asc">Default</option>
-      <option value="listing-date-sort" data-direction="asc">
-        Year - Oldest
-      </option>
-      <option value="listing-date-sort" data-direction="desc">
-        Year - Newest
-      </option>
-      <option value="listing-title" data-direction="asc">
-        Title
-      </option>
-    </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#referee-1-report-identification" id="toc-referee-1-report-identification" class="nav-link active" data-scroll-target="#referee-1-report-identification">Referee 1 Report: Identification</a></li>
+  </ul>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
-</div>
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="SVYlMkNEZXZlbG9wbWVudCUyQzIwMTMlMkNQQVNTJTJDQ2F1c2FsJTIwRm9yZXN0" data-listing-date-sort="1356998400000" data-listing-file-modified-sort="1774111558682" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1438">
-<a href="./papers/ashraf2013-cf/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/ashraf2013-cf/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Out of Africa: Genetic Diversity and Economic Development (Causal Forest)
-</h5>
-<div class="listing-categories">
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
-<div class="listing-category" onclick="window.quartoListingCategory('SVY='); return false;">IV</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('RGV2ZWxvcG1lbnQ='); return false;">Development</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMw=='); return false;">2013</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
+<section id="referee-1-report-identification" class="level2">
+<h2 class="anchored" data-anchor-id="referee-1-report-identification">Referee 1 Report: Identification</h2>
+<p><strong>Round:</strong> 1 <strong>Overall verdict:</strong> Minor revision</p>
+<section id="contribution-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="contribution-assessment">Contribution assessment</h3>
+<p>This RECAST adds genuine value to Nunn &amp; Trefler (2010). The original paper relies on OLS with 17 controls in a sample of only 63 countries, making it vulnerable to regularisation bias and functional-form misspecification. The DML extension relaxes the linearity assumption on the nuisance functions, provides data-driven variable selection via Lasso (retaining only 3 of 17 controls for the outcome equation), and delivers an independent robustness check that closely replicates the Baiardi &amp; Naghi (2024) benchmarks (within 0.001–0.002 across all three treatments). The heterogeneous treatment effect analysis is a substantive new contribution: the BLP test and GATE estimates reveal that the original paper’s uniform positive conclusion masks a gradient from significantly negative effects (Q1: -0.206) to significantly positive effects (Q5: +0.193), a finding absent from the original work.</p>
+</section>
+<section id="essential-issues-must-be-addressed-paper-is-unpublishable-without-these" class="level3">
+<h3 class="anchored" data-anchor-id="essential-issues-must-be-addressed-paper-is-unpublishable-without-these">Essential issues (must be addressed – paper is unpublishable without these)</h3>
+<ol type="1">
+<li><p><strong>The estimand is never formally defined.</strong> The paper uses “ATE” informally (e.g., the BLP proxy is labelled “ATE proxy” in Section 3.2) but never states what the target estimand is – whether the Average Treatment Effect, a conditional expectation, or a partial derivative with respect to a continuous treatment. Because skill1_corr is continuous, the PLR parameter theta is the marginal effect under partial linearity (Y = theta<em>D + g(X) + U), not an ATE in the potential-outcomes sense. Conflating theta with an ATE is substantively misleading, since there is no well-defined “treated” vs.&nbsp;“untreated” state for a continuous measure. This matters especially for the GATE analysis (Section 3.2), where quintile-specific “treatment effects” are reported without clarifying what counterfactual comparison they represent. </em>Action:* Add a short paragraph in Section 3.1 (Method) that formally defines the estimand as the partial linear coefficient theta – the marginal effect of a one-unit increase in the treatment holding X fixed – and distinguish this from the ATE language used in the heterogeneity discussion. In the GATE section, clarify that the “GATE” estimates are group-specific marginal effects derived from the BLP decomposition, not average treatment effects from a binary intervention.</p></li>
+<li><p><strong>Low nuisance R-squared is flagged as FAIL but the identification implications are understated.</strong> The diagnostics report R-squared_Y = 0.094 for the outcome nuisance model. The paper correctly notes (Section 4) that Neyman orthogonality protects point estimates from first-order nuisance bias. However, the paper does not acknowledge that when nuisance models explain very little variation, the debiasing step removes very little confounding – meaning the DML estimate may converge toward the unadjusted bivariate coefficient rather than toward a well-controlled causal parameter. In a setting where the whole identification argument rests on selection-on-observables (i.e., adequately conditioning on X), a nuisance model that barely predicts Y|X raises the question of whether the controls are actually doing their job. This is distinct from the standard-error inflation point already made. <em>Action:</em> Add 2–3 sentences in the Diagnostics Discussion (Section 4) acknowledging that low nuisance R-squared may indicate that the ML learners are not effectively capturing the confounding structure in g(X), which limits the debiasing value of DML relative to OLS. Note that external validation against Baiardi &amp; Naghi (2024) partially mitigates this concern but does not resolve it, since their nuisance models face the same small-sample limitation.</p></li>
+</ol>
+</section>
+<section id="suggestions-would-improve-the-paper-but-optional" class="level3">
+<h3 class="anchored" data-anchor-id="suggestions-would-improve-the-paper-but-optional">Suggestions (would improve the paper, but optional)</h3>
+<ol type="1">
+<li><p><strong>Report the bivariate (no-controls) OLS coefficient alongside the 17-control OLS and DML estimates.</strong> If the DML estimate (0.018) is closer to the bivariate OLS than to the 17-control OLS (0.035), this would reinforce the concern that ML nuisance models are not effectively removing confounding. If instead the DML estimate sits between the bivariate and controlled OLS, it would support the interpretation that DML is successfully partialling out at least some confounding. This is a one-line regression that would sharpen the interpretation at negligible cost.</p></li>
+<li><p><strong>Discuss the plausibility of selection-on-observables more explicitly.</strong> The original paper’s identification rests on 17 controls being sufficient to close all backdoor paths from tariff skill-bias to growth. The paper currently describes the controls (Section 2.1) but does not discuss potential omitted confounders – for example, institutional quality, trade openness beyond tariffs, or colonial history (beyond regional dummies). A brief paragraph acknowledging the main omitted-variable threats would help the reader assess how much weight to place on the causal interpretation, whether OLS or DML.</p></li>
+<li><p><strong>Note that K=2 cross-fitting folds with N=63 means each fold has only ~32 observations for nuisance estimation.</strong> The paper follows Baiardi &amp; Naghi (2024) in using K=2, which is standard in the DML literature, but with N=63 this leaves very few observations per fold for training flexible ML models. Mentioning this as a contributing factor to the low nuisance R-squared would help the reader understand why the ML models underperform.</p></li>
+</ol>
+</section>
+<section id="comments-to-the-authors" class="level3">
+<h3 class="anchored" data-anchor-id="comments-to-the-authors">Comments to the authors</h3>
+<p>The paper is well structured and clearly written. The replication is convincing – all three specifications match the original within rounding tolerance, and the systematic comparison across five ML learners plus external validation against Baiardi &amp; Naghi (2024) is a strength. The heterogeneity analysis is the most interesting contribution: the GATE gradient from -0.206 to +0.193 is a genuinely new finding that enriches the original paper’s blanket positive conclusion. The honest acknowledgment of the Neural Network’s failure (catastrophic R-squared of -38.8) and the transparent diagnostics table are also commendable.</p>
+<p>The two essential issues above are narrowly scoped. The estimand clarification (Issue 1) requires only a paragraph of text and no new computation. The nuisance R-squared discussion (Issue 2) requires 2–3 additional sentences. Neither demands re-running any code. With these addressed, the identification discussion would be appropriately careful for a paper whose entire value proposition is “what happens when we relax OLS assumptions” – the reader needs to understand precisely what DML does and does not buy in a setting with N=63 and 17 controls.</p>
 
-<div class="listing-category" onclick="window.quartoListingCategory('Q2F1c2FsJTIwRm9yZXN0'); return false;">Causal Forest</div>
 
-</div>
-<div class="card-text listing-description delink">
-<p>IV using migratory distance as instrument for genetic diversity — Causal Forest extension</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Ashraf, Galor
-</div>
-<div class="listing-date">
-Jan 1, 2013
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="SVYlMkNIZWFsdGglMkMyMDEyJTJDUEFTUyUyQ0NhdXNhbCUyMEZvcmVzdA==" data-listing-date-sort="1325376000000" data-listing-file-modified-sort="1774107226447" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="962">
-<a href="./papers/finkelstein2012-cf/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/finkelstein2012-cf/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Oregon Health Insurance Experiment (Causal Forest)
-</h5>
-<div class="listing-categories">
+</section>
+</section>
 
-<div class="listing-category" onclick="window.quartoListingCategory('SVY='); return false;">IV</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('SGVhbHRo'); return false;">Health</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMg=='); return false;">2012</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2F1c2FsJTIwRm9yZXN0'); return false;">Causal Forest</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>IV using Oregon Medicaid lottery as instrument for insurance coverage — Causal Forest extension</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Finkelstein, Taubman, Wright, Bernstein, Gruber, Newhouse, Allen, Baicker
-</div>
-<div class="listing-date">
-Jan 1, 2012
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="SVYlMkNIZWFsdGglMkMyMDEyJTJDUEFTUyUyQ0RvdWJsZU1M" data-listing-date-sort="1325376000000" data-listing-file-modified-sort="1774105312259" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="842">
-<a href="./papers/finkelstein2012-dml/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/finkelstein2012-dml/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Oregon Health Insurance Experiment (DoubleML)
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('SVY='); return false;">IV</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('SGVhbHRo'); return false;">Health</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMg=='); return false;">2012</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RG91YmxlTUw='); return false;">DoubleML</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>IV using Oregon Medicaid lottery as instrument for insurance coverage — DoubleML PLIV extension</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Finkelstein, Taubman, Wright, Bernstein, Gruber, Newhouse, Allen, Baicker
-</div>
-<div class="listing-date">
-Jan 1, 2012
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="T0xTJTJDUHVibGljJTIwRmluYW5jZSUyQ1RheGF0aW9uJTJDMjAxMCUyQ1BBU1M=" data-listing-date-sort="1262304000000" data-listing-file-modified-sort="1774897771035" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="726">
-<a href="./papers/djankov2010-dml/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/djankov2010-dml/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The Effect of Corporate Taxes on Investment and Entrepreneurship
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('T0xT'); return false;">OLS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHVibGljJTIwRmluYW5jZQ=='); return false;">Public Finance</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGF4YXRpb24='); return false;">Taxation</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMA=='); return false;">2010</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Cross-country OLS: do higher corporate tax rates reduce investment and entrepreneurship?</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Djankov, Ganser, McLiesh, Ramalho &amp; Shleifer
-</div>
-<div class="listing-date">
-Jan 1, 2010
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="T0xTJTJDVHJhZGUlMkNHcm93dGglMkMyMDEwJTJDUEFTUw==" data-listing-date-sort="1262304000000" data-listing-file-modified-sort="1774947865692" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="714">
-<a href="./papers/nunntrefler2010-dml/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./papers/nunntrefler2010-dml/forest_plot.png" class="thumbnail-image card-img" style="height: 160px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The Structure of Tariffs and Long-term Growth
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('T0xT'); return false;">OLS</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VHJhZGU='); return false;">Trade</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('R3Jvd3Ro'); return false;">Growth</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('MjAxMA=='); return false;">2010</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UEFTUw=='); return false;">PASS</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Cross-country OLS: do skill-biased tariffs promote long-term economic growth?</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Nunn &amp; Trefler
-</div>
-<div class="listing-date">
-Jan 1, 2010
-</div>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -854,7 +599,7 @@ Jan 1, 2010
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qgallea/recast-causal-ai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://github.com/qgallea/recast-causal-ai">GitHub</a> · <a href="https://thecausalmindset.com/training/claude-code-for-research">Claude Code for Research</a></p>
 </div>
